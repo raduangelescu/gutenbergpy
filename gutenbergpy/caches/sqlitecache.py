@@ -10,7 +10,7 @@ class SQLiteCache(Cache):
     #name of the sql commands batch file, used to create the db (should not change)
     DB_CREATE_CACHE_FILENAME    = 'gutenbergindex.db.sql'
 
-    def __insertManyField(self,table,field,theSet,c):
+    def __insertManyField(self,table,field,theSet):
         if len(theSet):
             query = 'INSERT OR IGNORE INTO %s(%s) VALUES (?)' % (table,field)
             self.cursor.executemany(query,map(lambda x: (x,) , theSet))

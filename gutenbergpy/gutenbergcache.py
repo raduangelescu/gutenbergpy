@@ -1,5 +1,5 @@
 from os   import path
-from time import time
+import time
 from utils import Utils
 
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
@@ -20,6 +20,7 @@ class GutenbergCache:
             return
 
         if refresh is True:
+            print 'Deleting old files'
             Utils.delete_tmp_files(True)
 
         Utils.download_file()

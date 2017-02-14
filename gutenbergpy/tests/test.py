@@ -1,3 +1,3 @@
 from gutenbergpy.gutenbergcache import GutenbergCache
 
-GutenbergCache.create()
+GutenbergCache.create(True)

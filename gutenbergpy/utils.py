@@ -30,13 +30,13 @@ class Utils:
             pass
 
     @staticmethod
-    def update_progress_bar(type,progress,total_progress): #used to update the progress bar display
-        if total_progress % GutenbergCacheSettings.DOWNLOAD_NUM_DIVS == 0:
+    def update_progress_bar(type,progress,total_progress,force_update = False ): #used to update the progress bar display
+        if total_progress % GutenbergCacheSettings.DOWNLOAD_NUM_DIVS == 0 or force_update == True:
             dv = total_progress/GutenbergCacheSettings.DOWNLOAD_NUM_DIVS
             num_of_sharp = progress/dv
             num_of_space = (total_progress-progress)/dv
 
-            sys.stdout.write("\r %s  %s: [%s%s]" % (type,GutenbergCacheSettings.CACHE_RDF_ARCHIVE_NAME,'#'* num_of_sharp,' '*num_of_space))
+            sys.stdout.write("\r %s : [%s%s]" % (type,'#'* num_of_sharp,' '*num_of_space))
             sys.stdout.flush()
 
     download_progress = 0
@@ -44,7 +44,7 @@ class Utils:
     def __report(block_no, block_size, file_size):  #callback called on download update
         Utils.download_progress += block_size
         type = 'Downloading %s'%(GutenbergCacheSettings.CACHE_RDF_ARCHIVE_NAME)
-        Utils.update_progress_bar(type,Utils.download_progress,file_size)
+        Utils.update_progress_bar(type,Utils.download_progress,file_size,True)
 
     @staticmethod
     def download_file(): #used to download the rdf tar file
