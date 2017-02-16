@@ -21,7 +21,7 @@ class ParseItem:
                 text = el.replace("\"","'")
                 index = self.set.index(text)
                 if index is not -1:
-                    set['text'][1].add(book_id)
+                    set['text'][1] = book_id
                 else:
                     new_index = self.set.add((text,book_id))
                     ret.append(new_index)

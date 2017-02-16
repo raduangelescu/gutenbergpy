@@ -32,18 +32,17 @@ class RdfParser:
         total = len(dirs)
 
         for idx, dir in enumerate(dirs):
-
             processing_str = "Processing progress: %d / %d" % (idx,total)
             Utils.update_progress_bar(processing_str,idx,total)
             file_path = "%s%s\pg%s.rdf" % (GutenbergCacheSettings.CACHE_RDF_UNPACK_DIRECTORY,dir,dir)
             doc = etree.parse(file_path,etree.ETCompatXMLParser())
 
             res = Fields.FIELD_COUNT * [None]
-            for idx, pt in enumerate(result.field_sets):
+            for idx_field, pt in enumerate(result.field_sets):
                 if not pt.needs_book_id():
-                    res[idx] = pt.do(doc)
+                    res[idx_field] = pt.do(doc)
                 else:
-                    res[idx] = pt.do(doc,idx+1)
+                    res[idx_field] = pt.do(doc,idx+1)
 
             gutenberg_book_id = int(dir);
             description_x   = doc.xpath('//dcterms:description/text()', namespaces=GutenbergCacheSettings.NS)
