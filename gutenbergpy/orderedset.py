@@ -119,6 +119,10 @@ class OrderedSet(collections.MutableSet):
         """
         if is_iterable(key):
             return [self.index(subkey) for subkey in key]
+
+        if key not in self.map:
+            return -1
+
         return self.map[key]
 
     def pop(self):

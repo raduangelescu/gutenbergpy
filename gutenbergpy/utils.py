@@ -30,8 +30,8 @@ class Utils:
             pass
 
     @staticmethod
-    def update_progress_bar(type,progress,total_progress,force_update = False ): #used to update the progress bar display
-        if total_progress % GutenbergCacheSettings.DOWNLOAD_NUM_DIVS == 0 or force_update == True:
+    def update_progress_bar(type,progress,total_progress,force_update = True ): #used to update the progress bar display
+        if total_progress % GutenbergCacheSettings.DOWNLOAD_NUM_DIVS == 0 or force_update == True or progress == 0:
             dv = total_progress/GutenbergCacheSettings.DOWNLOAD_NUM_DIVS
             num_of_sharp = progress/dv
             num_of_space = (total_progress-progress)/dv
