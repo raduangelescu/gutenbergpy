@@ -15,6 +15,24 @@ class SQLiteCache(Cache):
             query = 'INSERT OR IGNORE INTO %s(%s) VALUES (?)' % (table,field)
             self.cursor.executemany(query,map(lambda x: (x,) , theSet))
 
+#TODO FINISH THIS
+    def __insertManyFiled(self,table,theSet,**kwargs):
+        fields = ''
+        for key, value in kwargs.iteritems():
+            fields =  fields +str(key)+','
+        query = 'INSERT OR IGNORE INTO %s(%s) VALUES (?'+',?'*len(kwargs) + ')'
+        insert_tuple = ( None,) * len(kwargs)
+        idx = 0
+        fields = ''
+        for key,value in kwargs.iteritems():
+            insert_tuple[idx] = value
+
+    def __insertManyFieldId(self,table,field1,field2,theSet):
+        if len(theSet):
+            query = 'INSERT OR IGNORE INTO %s(%s, %s) VALUES (?,?)' % (table,field1,field2)
+            insert_array = map(lambda x: (x[0],x[1]) , theSet)
+            self.cursor.executemany(query,insert_array)
+
     def __insertLinks(self,ids,tablename,link1name,link2name,c):
         if len(ids):
             query = "INSERT INTO %s(%s,%s) VALUES (?,?)" % (tablename,link1name,link2name)
@@ -29,7 +47,10 @@ class SQLiteCache(Cache):
         self.connection.commit()
 
         for pt in parse_results.field_sets:
-            self.__insertManyField(pt.tableName, 'name', pt.set)
+            if pt.needs_book_id():
+                self.__insertManyFieldId(pt.tableName, 'name','bookid', pt.set)
+            else:
+                self.__insertManyField(pt.tableName, 'name', pt.set)
 
         self.__insertManyField('books','description',parse_results.books)
 
@@ -40,9 +61,7 @@ class SQLiteCache(Cache):
             book_id = idx +1
 
             self.__insertLinks(map(lambda x: (x,book_id) , book.creator_name),'book_authors','authorid','bookid')
-            self.__insertLinks(map(lambda x: (x,book_id) , book.book_files),'book_downloads','downloadsid','bookid')
             self.__insertLinks(map(lambda x: (x,book_id) , book.subject),'book_subjects','subjectid','bookid')
-            self.__insertLinks(map(lambda x: (x,book_id) , book.titles),'book_titles','title_id','book_id')
 
             if len(book.language) > 0:
                 self.cursor.execute("INSERT INTO book_languages(bookid,languageid) VALUES (?,?) ", (idx, book.language[0]))

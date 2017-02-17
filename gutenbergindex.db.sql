@@ -28,7 +28,7 @@ CREATE TABLE `rights` (
 	`name`	TEXT
 );
 
-CREATE TABLE "files" (
+CREATE TABLE `downloadlinks` (
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
 	`name`	TEXT,
 	`typeid`	INTEGER,
@@ -36,7 +36,7 @@ CREATE TABLE "files" (
 );
 CREATE TABLE `titles` (
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`name`	TEXT
+	`name`	TEXT,
 	`bookid` INTEGER
 );
 
@@ -52,13 +52,13 @@ CREATE TABLE `book_authors` (
 
 CREATE TABLE "books" (
 	`id`	INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`publisher` INTEGER,
+	`publisherid` INTEGER,
 	`dateissued` DATE,
-	`rights` INTEGER,
+	`rightsid` INTEGER,
 	`descriptionlink` TEXT,
 	`numdownloads` INTEGER,
 	`languageid` INTEGER,
-	`bookshelveid` INTEGER
+	`bookshelveid` INTEGER,
 	`gutenbergbookid` INTEGER
 );
 
