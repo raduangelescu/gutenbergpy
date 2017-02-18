@@ -5,11 +5,11 @@ from gutenbergpy.parse.cachefields import Fields
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 
 import sqlite3
+import os
 
 class SQLiteCache(Cache):
     #name of the sql commands batch file, used to create the db (should not change)
-    DB_CREATE_CACHE_FILENAME         = 'gutenbergindex.db.sql'
-    DB_CREATE_CACHE_INDICES_FILENAME = 'gutenbergindex_indices.db.sql'
+
 
     def __init__(self):
         self.cursor     = None
@@ -25,6 +25,13 @@ class SQLiteCache(Cache):
         self.table_map[Fields.FILES]    =   '/---/'
         self.table_map[Fields.PUBLISHER]=   'publishers'
         self.table_map[Fields.RIGHTS]   =   'rights'
+
+        SQLiteCache.DB_CREATE_CACHE_FILENAME         = 'gutenbergindex.db.sql'
+        SQLiteCache.DB_CREATE_CACHE_INDICES_FILENAME = 'gutenbergindex_indices.db.sql'
+
+        this_dir, this_filename = os.path.split(__file__)
+        SQLiteCache.DB_CREATE_CACHE_FILENAME = os.path.join(this_dir, SQLiteCache.DB_CREATE_CACHE_FILENAME)
+        SQLiteCache.DB_CREATE_CACHE_INDICES_FILENAME = os.path.join(this_dir, SQLiteCache.DB_CREATE_CACHE_INDICES_FILENAME)
 
     def __insertManyField(self,table,field,theSet):
         if len(theSet):

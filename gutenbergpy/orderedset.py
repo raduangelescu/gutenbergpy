@@ -1,3 +1,4 @@
+#THIS CODE IS ADAPTED FROM https://github.com/LuminosoInsight/ordered-set
 SLICE_ALL = slice(None)
 __version__ = '2.0.1'
 

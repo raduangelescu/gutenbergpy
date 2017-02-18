@@ -9,8 +9,8 @@ class GutenbergCacheSettings():
     CACHE_RDF_ARCHIVE_NAME      = 'rdf-files.tar.bz2'
     #number of #'s shown in loading bar (common to all loading bars)
     DOWNLOAD_NUM_DIVS = 20
-    #used to hold download progress for rdf tar downloading
-
+    #text files cache folder
+    TEXT_FILES_CACHE_FOLDER ='texts\\'
     ##########READONLY VARIABLES (please put readonly variables here)
     #namespace used for the rds parsing (should not change)
     NS ={
@@ -22,8 +22,8 @@ class GutenbergCacheSettings():
         'pgterms':"http://www.gutenberg.org/2009/pgterms/"}
     ##########END OF READONLY VARIABLES
 
-
-    def __init__(**kwargs):
+    @staticmethod
+    def set(**kwargs):
         if kwargs.has_key('CacheFilename'):
             GutenbergCacheSettings.CACHE_FILENAME = kwargs['CacheFilename']
         if kwargs.has_key('CacheUnpackDir'):
@@ -34,3 +34,5 @@ class GutenbergCacheSettings():
             GutenbergCacheSettings.DOWNLOAD_NUM_DIVS = kwargs['ProgressBarMaxLength']
         if kwargs.has_key('CacheRDFDownloadLink'):
             GutenbergCacheSettings.CACHE_RDF_DOWNLOAD_LINK = kwargs['CacheRDFDownloadLink']
+        if kwargs.has_key('TextFilesCacheFolder'):
+            GutenbergCacheSettings.TEXT_FILES_CACHE_FOLDER = kwargs['TextFilesCacheFolder']
