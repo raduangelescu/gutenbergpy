@@ -105,3 +105,7 @@ Or do a native query on the sqlite database
 .. sourcecode :: python
     
     cache.native_query("SELECT * FROM books")
+
+For custom queries take a look at the database scheme:
+
+[[https://github.com/raduangelescu/gutenbergpy/blob/master/sqlitecheme.png|alt=databasescheme]]
