@@ -63,23 +63,28 @@ To do this you first need to create the cache (this is a one time thing per os, 
     GutenbergCache.create()
     
 for debugging/better control you have these boolean options on create
-    *refresh - deletes the old cache
-    *download- property downloads the rdf file from the gutenberg project
-    *unpack  - unpacks it
-    *parse   - parses it in memory
-    *cache   - writes the cache
+
+    - *refresh*  deletes the old cache
+    
+    - *download*  property downloads the rdf file from the gutenberg project
+    
+    - *unpack*   unpacks it
+    
+    - *parse*    parses it in memory
+    
+    - *cache*    writes the cache
 
 .. sourcecode :: python
 
     GutenbergCache.create(refresh=True, download=True, unpack=True, parse=True, cache=True, deleteTemp=True)
 
 for even better control you may set the GutenbergCacheSettings
-    *CacheFilename
-    *CacheUnpackDir
-    *CacheArchiveName
-    *ProgressBarMaxLength
-    *CacheRDFDownloadLink
-    *TextFilesCacheFolder
+    - *CacheFilename*
+    - *CacheUnpackDir*
+    - *CacheArchiveName*
+    - *ProgressBarMaxLength*
+    - *CacheRDFDownloadLink*
+    - *TextFilesCacheFolder*
 
 .. sourcecode :: python
     GutenbergCacheSettings.set(CacheFilename="",CacheUnpackDir="",CacheArchiveName="",ProgressBarMaxLength="",CacheRDFDownloadLink="",TextFilesCacheFolder="")
