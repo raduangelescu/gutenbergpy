@@ -14,8 +14,9 @@ but may be freely used by anybody.
 
 The package:
 
-    *Generates a local cache (of all gutenberg informations) that you can interogate to get book ids
-    *Downloads and cleans raw text from gutenberg books
+    - Generates a local cache (of all gutenberg informations) that you can interogate to get book ids
+    
+    - Downloads and cleans raw text from gutenberg books
 
 
 The package has been tested with Python  2.7
