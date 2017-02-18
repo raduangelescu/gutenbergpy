@@ -35,11 +35,8 @@ or just install it from source (it's all just python code)
 .. sourcecode :: sh
 
     git clone https://github.com/raduangelescu/gutenbergpy
-
-    virtualenv --no-site-packages virtualenv
-    source virtualenv/bin/activate
-    pip install -r requirements.pip
-
+    python setup.py install
+    
 Usage
 =====
 
