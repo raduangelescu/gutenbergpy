@@ -107,4 +107,6 @@ Or do a native query on the sqlite database
     cache.native_query("SELECT * FROM books")
 
 For custom queries take a look at the database scheme:
+
+
 ![databsescheme](sqlitecheme.png)
