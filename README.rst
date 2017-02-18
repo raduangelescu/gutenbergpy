@@ -108,5 +108,7 @@ Or do a native query on the sqlite database
 
 For custom queries take a look at the database scheme:
 
-
-![databsescheme](sqlitecheme.png)
+.. image:: https://github.com/raduangelescu/gutenbergpy/blob/master/sqlitecheme.png
+    :alt: SQLITE database scheme
+    :width: 100%
+    :align: center
