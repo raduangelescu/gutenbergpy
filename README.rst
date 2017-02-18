@@ -47,46 +47,61 @@ Downloading a text
 
 .. sourcecode :: python
 
-import gutenbergpy.textget
-#this gets a book by its gutenberg id
-raw_book    = gutenbergpy.textget.get_text_by_id(1000)
-print raw_book
-#this strips the headers from the book
-clean_book  = gutenbergpy.textget.strip_headers(raw_book)
-print clean_book
-
-.. sourcecode :: sh
-
-
+    import gutenbergpy.textget
+    #this gets a book by its gutenberg id
+    raw_book    = gutenbergpy.textget.get_text_by_id(1000)
+    print raw_book
+    #this strips the headers from the book
+    clean_book  = gutenbergpy.textget.strip_headers(raw_book)
+    print clean_book
 
 Query the cache
 --------------------
 To do this you first need to create the cache (this is a one time thing per os, until you decide to redo it)
 
 .. sourcecode :: python
+
     from gutenbergpy.gutenbergcache import GutenbergCache
     GutenbergCache.create()
-    #for debugging/better control you have these boolean options on create
-    #refresh - deletes the old cache
-    #download- property downloads the rdf file from the gutenberg project
-    #unpack  - unpacks it
-    #parse   - parses it in memory
-    #cache   - writes the cache
+    
+for debugging/better control you have these boolean options on create
+    *refresh - deletes the old cache
+    *download- property downloads the rdf file from the gutenberg project
+    *unpack  - unpacks it
+    *parse   - parses it in memory
+    *cache   - writes the cache
+
+.. sourcecode :: python
+
     GutenbergCache.create(refresh=True, download=True, unpack=True, parse=True, cache=True, deleteTemp=True)
-    #for even better control you may set the GutenbergCacheSettings
-    #CacheFilename
-    #CacheUnpackDir
-    #CacheArchiveName
-    #ProgressBarMaxLength
-    #CacheRDFDownloadLink
-    #TextFilesCacheFolder
-    #example
+
+for even better control you may set the GutenbergCacheSettings
+    *CacheFilename
+    *CacheUnpackDir
+    *CacheArchiveName
+    *ProgressBarMaxLength
+    *CacheRDFDownloadLink
+    *TextFilesCacheFolder
+
+.. sourcecode :: python
     GutenbergCacheSettings.set(CacheFilename="",CacheUnpackDir="",CacheArchiveName="",ProgressBarMaxLength="",CacheRDFDownloadLink="",TextFilesCacheFolder="")
-    # After doing a create you need to wait, it will be over in about 5 minutes depending on your internet speed and computer power
-    # Now you can do queries
-    #get the cache
+
+After doing a create you need to wait, it will be over in about 5 minutes depending on your internet speed and computer power
+Now you can do queries
+Get the cache
+
+.. sourcecode :: python
+
     cache  = GutenbergCache.get_cache()
-    #get the ids
+
+Get the book Gutenberg unique indices by using this query function
+
+.. sourcecode :: python
+
     print cache.query(downloadtype=['application/plain','text/plain','text/html; charset=utf-8'])
-    #or do a native query
+
+Or do a native query on the sqlite database
+
+.. sourcecode :: python
+    
     cache.native_query("SELECT * FROM books")
