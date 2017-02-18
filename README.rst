@@ -10,9 +10,11 @@ This packadge makes filtering and getting information from `Project
 Gutenberg <http://www.gutenberg.org>`_ easier from python.
 
 It's target audience is machine learning guys that need data for their project,
-but may be freely used by whomever.
+but may be freely used by anybody.
 
-The packadge:
+The package:
+
+
 *Generates a local cache (of all gutenberg informations) that you can interogate to get book ids
 *Downloads and cleans raw text from gutenberg books
 
