@@ -31,11 +31,10 @@ Installation
     pip install gutenbergpy
 
 or just install it from source (it's all just python code)
+
 .. sourcecode :: sh
 
     git clone https://github.com/raduangelescu/gutenbergpy
-
-.. sourcecode :: sh
 
     virtualenv --no-site-packages virtualenv
     source virtualenv/bin/activate
