@@ -65,13 +65,9 @@ To do this you first need to create the cache (this is a one time thing per os, 
 for debugging/better control you have these boolean options on create
 
     - *refresh*  deletes the old cache
-    
     - *download*  property downloads the rdf file from the gutenberg project
-    
     - *unpack*   unpacks it
-    
     - *parse*    parses it in memory
-    
     - *cache*    writes the cache
 
 .. sourcecode :: python
@@ -87,10 +83,12 @@ for even better control you may set the GutenbergCacheSettings
     - *TextFilesCacheFolder*
 
 .. sourcecode :: python
-    GutenbergCacheSettings.set(CacheFilename="",CacheUnpackDir="",CacheArchiveName="",ProgressBarMaxLength="",CacheRDFDownloadLink="",TextFilesCacheFolder="")
+    GutenbergCacheSettings.set(CacheFilename="", CacheUnpackDir="", CacheArchiveName="", ProgressBarMaxLength="",        CacheRDFDownloadLink="", TextFilesCacheFolder="")
 
 After doing a create you need to wait, it will be over in about 5 minutes depending on your internet speed and computer power
 Now you can do queries
+
+
 Get the cache
 
 .. sourcecode :: python
@@ -99,6 +97,16 @@ Get the cache
 
 Get the book Gutenberg unique indices by using this query function
 
+Standard query fields:
+    - languages
+    - authors 
+    - types 
+    - titles 
+    - subjects 
+    - publishers 
+    - bookshelves 
+    - downloadtype
+    
 .. sourcecode :: python
 
     print cache.query(downloadtype=['application/plain','text/plain','text/html; charset=utf-8'])
