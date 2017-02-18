@@ -1,9 +1,8 @@
 class Book:
-    def __init__(self, description_id,publisher_id,rights_id,language_id,
+    def __init__(self,publisher_id,rights_id,language_id,
                  bookshelf_id,gutenberg_book_id,
                  date_issued,num_downloads,
                  titles_id, subjects_id, type_id, authors_id,files_id):
-        self.description_id     = description_id
         self.publisher_id       = publisher_id
         self.rights_id          = rights_id
         self.language_id        = language_id
