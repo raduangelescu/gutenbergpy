@@ -1,1 +1,4 @@
 *.pyc
+build/
+GutenbergPy.egg-info/
+dist/

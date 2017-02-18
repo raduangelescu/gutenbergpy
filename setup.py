@@ -1,11 +1,10 @@
-"""Library installer."""
-
-from __future__ import absolute_import, unicode_literals
 from os.path import isfile
 from sys import version_info
 
 from setuptools import find_packages
 from setuptools import setup
+
+from glob import glob
 
 def requirements_for(version=None):
     suffix = '-py%s' % version if version is not None else ''
@@ -22,15 +21,18 @@ def requirements_for(version=None):
 def install_requires():
     return requirements_for() | requirements_for(version_info.major)
 
+   
 setup(
     name='GutenbergPy',
-    version='0.1.1',
+    version='0.1.2',
     author='Radu Angelescu',
     author_email='raduangelescu+pypi@gmail.com',
     packages=find_packages(),
+    package_data={'gutenberg.caches': ['*.sql']},
     url='https://github.com/raduangelescu/gutenbergpy',
     download_url='http://pypi.python.org/pypi/GutenbergPy',
     license='LICENSE.txt',
     description='Library to create and interogate local cache for Project Gutenberg',
     long_description=open('README.rst').read(),
+    include_package_data=True,
     install_requires=install_requires())
