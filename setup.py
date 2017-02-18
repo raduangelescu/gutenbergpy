@@ -7,7 +7,6 @@ from sys import version_info
 from setuptools import find_packages
 from setuptools import setup
 
-
 def requirements_for(version=None):
     suffix = '-py%s' % version if version is not None else ''
     pip_path = 'requirements%s.pip' % suffix
@@ -23,14 +22,12 @@ def requirements_for(version=None):
 def install_requires():
     return requirements_for() | requirements_for(version_info.major)
 
-
 setup(
     name='GutenbergPy',
-    version='0.1.0',
+    version='0.1.1',
     author='Radu Angelescu',
     author_email='raduangelescu+pypi@gmail.com',
     packages=find_packages(),
-    package_data={'gutenbergpy': ['caches/*.sql']},
     url='https://github.com/raduangelescu/gutenbergpy',
     download_url='http://pypi.python.org/pypi/GutenbergPy',
     license='LICENSE.txt',
