@@ -47,15 +47,13 @@ Downloading a text
 
 .. sourcecode :: python
 
-import gutenbergpy.textget
-#this gets a book by its gutenberg id
-raw_book    = gutenbergpy.textget.get_text_by_id(1000)
-print raw_book
-#this strips the headers from the book
-clean_book  = gutenbergpy.textget.strip_headers(raw_book)
-print clean_book
-
-.. sourcecode :: sh
+    import gutenbergpy.textget
+    #this gets a book by its gutenberg id
+    raw_book    = gutenbergpy.textget.get_text_by_id(1000)
+    print raw_book
+    #this strips the headers from the book
+    clean_book  = gutenbergpy.textget.strip_headers(raw_book)
+    print clean_book
 
 
 
@@ -81,7 +79,7 @@ To do this you first need to create the cache (this is a one time thing per os, 
     #CacheRDFDownloadLink
     #TextFilesCacheFolder
     #example
-    GutenbergCacheSettings.set(CacheFilename="",CacheUnpackDir="",CacheArchiveName="",ProgressBarMaxLength="",CacheRDFDownloadLink="",TextFilesCacheFolder="")
+                GutenbergCacheSettings.set(CacheFilename="",CacheUnpackDir="",CacheArchiveName="",ProgressBarMaxLength="",CacheRDFDownloadLink="",TextFilesCacheFolder="")
     # After doing a create you need to wait, it will be over in about 5 minutes depending on your internet speed and computer power
     # Now you can do queries
     #get the cache
