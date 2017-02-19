@@ -6,10 +6,10 @@ GutenbergPy
 Overview
 ========
 
-.. image:: https://github.com/raduangelescu/gutenbergpy/blob/master/mongodb.png
+.. image:: https://github.com/raduangelescu/gutenbergpy/blob/master/dblogos.png
     :alt: MONGODB
     :align: center
-    :width: 25%
+    :width: 100%
     
 This package makes filtering and getting information from `Project
 Gutenberg <http://www.gutenberg.org>`_ easier from python.
