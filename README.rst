@@ -8,14 +8,11 @@ Overview
 
 .. image:: https://github.com/raduangelescu/gutenbergpy/blob/master/sqlite.png
     :alt: SQLITE 
-    :width: 25%
-    :height: 25%
     :align: center
     
-.. image::https://github.com/raduangelescu/gutenbergpy/blob/master/mongodb.png
+.. image:: https://github.com/raduangelescu/gutenbergpy/blob/master/mongodb.png
     :alt: MONGODB
-    :width: 25%
-    :height: 25%
+
     :align: center
     
 This package makes filtering and getting information from `Project
