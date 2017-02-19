@@ -88,14 +88,15 @@ for even better control you may set the GutenbergCacheSettings
     CacheArchiveName="", ProgressBarMaxLength="", CacheRDFDownloadLink="", TextFilesCacheFolder="")
 
 After doing a create you need to wait, it will be over in about 5 minutes depending on your internet speed and computer power
-Now you can do queries
-
+(On a i7 with gigabit connection and ssd it finishes in about 1 minute)
 
 Get the cache
 
 .. sourcecode :: python
 
     cache  = GutenbergCache.get_cache()
+
+Now you can do queries
 
 Get the book Gutenberg unique indices by using this query function
 
