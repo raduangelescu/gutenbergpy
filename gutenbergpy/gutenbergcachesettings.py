@@ -22,6 +22,8 @@ class GutenbergCacheSettings():
         'pgterms':"http://www.gutenberg.org/2009/pgterms/"}
     ##########END OF READONLY VARIABLES
 
+    ##
+    # Used to set the settings global variables
     @staticmethod
     def set(**kwargs):
         if kwargs.has_key('CacheFilename'):

@@ -1,3 +1,5 @@
+##
+# Used to hold a book in parse results after parsing
 class Book:
     def __init__(self,publisher_id,rights_id,language_id,
                  bookshelf_id,gutenberg_book_id,

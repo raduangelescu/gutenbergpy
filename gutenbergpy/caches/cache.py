@@ -1,3 +1,5 @@
+##
+# Base class for any kind of cache
 class Cache():
     def create_cache(self):
         raise NotImplementedError( "Please implement the create_cache function" )

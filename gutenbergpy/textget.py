@@ -9,9 +9,8 @@ import requests
 
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 
-'''
-MARKERS ARE FROM https://github.com/c-w/Gutenberg/blob/master/gutenberg/_domain_model/text.py
-'''
+##
+# MARKERS ARE FROM https://github.com/c-w/Gutenberg/blob/master/gutenberg/_domain_model/text.py
 
 TEXT_START_MARKERS = frozenset((
     "*END*THE SMALL PRINT",
@@ -100,12 +99,11 @@ TEXT_END_MARKERS = frozenset((
 ))
 
 
-LEGALESE_START_MARKERS = frozenset(("<<THIS ELECTRONIC VERSION OF",))
+LEGALESE_START_MARKERS  = frozenset(("<<THIS ELECTRONIC VERSION OF",))
+LEGALESE_END_MARKERS    = frozenset(("SERVICE THAT CHARGES FOR DOWNLOAD",))
 
-
-LEGALESE_END_MARKERS = frozenset(("SERVICE THAT CHARGES FOR DOWNLOAD",))
-
-#adapted from https://github.com/c-w/Gutenberg/blob/master/gutenberg/acquire/text.py
+##
+# adapted from https://github.com/c-w/Gutenberg/blob/master/gutenberg/acquire/text.py
 def get_text_dir_from_index(index):
     str_etextno = str(index).zfill(2)
     all_but_last_digit = list(str_etextno[:-1])
@@ -113,7 +111,8 @@ def get_text_dir_from_index(index):
     subdir = "{0}/{1}".format(subdir_part, index)  # etextno not zfilled
     return subdir
 
-#adapted from https://github.com/c-w/Gutenberg/blob/master/gutenberg/acquire/text.py
+##
+# adapted from https://github.com/c-w/Gutenberg/blob/master/gutenberg/acquire/text.py
 def _format_download_uri(index):
     """Returns the download location on the Project Gutenberg servers for a
     given text.
@@ -134,7 +133,9 @@ def _format_download_uri(index):
             return uri
     raise None
 
-#adapted from https://github.com/c-w/Gutenberg/blob/master/gutenberg/acquire/text.py
+
+##
+# adapted from https://github.com/c-w/Gutenberg/blob/master/gutenberg/acquire/text.py
 def get_text_by_id(index):
     file_cache_location = "%s%d%s"%(GutenbergCacheSettings.TEXT_FILES_CACHE_FOLDER, index,'.txt.gz')
     if not os.path.exists(file_cache_location):
@@ -154,7 +155,9 @@ def get_text_by_id(index):
         text = cache.read().decode('utf-8')
     return text
 
-### this function is 100% from https://github.com/c-w/Gutenberg/blob/master/gutenberg/cleanup/strip_headers.py
+
+##
+# this function is 100% from https://github.com/c-w/Gutenberg/blob/master/gutenberg/cleanup/strip_headers.py
 def strip_headers(text):
 
     lines   = text.splitlines()

@@ -11,8 +11,11 @@ from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 from gutenbergpy.utils                  import Utils
 
 
+##
+# The rdf parser
 class RdfParser:
-
+    ##
+    # The main funciton, this actually parses the rdf files from the downloaded cache
     def do(self):
         result = RDFParseResults()
 
@@ -56,18 +59,10 @@ class RdfParser:
             language_id       =  -1 if not res[Fields.LANGUAGE] else res[Fields.LANGUAGE][0]
             bookshelf_id      =  -1 if not res[Fields.BOOKSHELF] else res[Fields.BOOKSHELF][0]
             type_id           =  -1 if not  res[Fields.TYPE]    else  res[Fields.TYPE][0]
-            newbook = Book(publisher_id,
-                           rights_id,
-                           language_id,
-                           bookshelf_id,
-                           gutenberg_book_id,
-                           date_issued,
-                           num_downloads,
-                           res[Fields.TITLE],
-                           res[Fields.SUBJECT],
-                           type_id,
-                           res[Fields.AUTHOR],
-                           res[Fields.FILES])
+
+            newbook = Book(publisher_id, rights_id, language_id, bookshelf_id,
+                           gutenberg_book_id, date_issued, num_downloads, res[Fields.TITLE],
+                           res[Fields.SUBJECT], type_id, res[Fields.AUTHOR], res[Fields.FILES])
 
             result.books.append(newbook)
 

@@ -6,10 +6,17 @@ from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 from gutenbergpy.parse.rdfparser        import RdfParser
 from gutenbergpy.caches.sqlitecache      import SQLiteCache
 
+
+##
+# Cache types
 class GutenbergCacheTypes:
     CACHE_TYPE_SQLITE = 0
 
+##
+# The main class (only this should be used to interface the cache)
 class GutenbergCache:
+    ##
+    # Get the cache by type
     @staticmethod
     def get_cache(type = GutenbergCacheTypes.CACHE_TYPE_SQLITE):
         if path.isfile(GutenbergCacheSettings.CACHE_FILENAME) :
@@ -17,7 +24,8 @@ class GutenbergCache:
                 return SQLiteCache()
         else:
             print "NO CACHE FOUND, PLEASE CALL create() FUNCTION TO POPULATE CACHE"
-
+    ##
+    # Create the cache
     @staticmethod
     def create(**kwargs):
 

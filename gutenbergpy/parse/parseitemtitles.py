@@ -2,6 +2,8 @@ from gutenbergpy.parse.parseitem import ParseItem
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 
 
+##
+# Parser helper for title items
 class ParseItemTitles(ParseItem):
     def needs_book_id(self):
         return True

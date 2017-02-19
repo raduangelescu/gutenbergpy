@@ -2,6 +2,9 @@ from gutenbergpy.parse.parseitem import ParseItem
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 from gutenbergpy.orderedset import OrderedSet
 
+
+##
+# Parser helper for download links
 class ParseItemFiles(ParseItem):
 
     def __init__(self,xpath):

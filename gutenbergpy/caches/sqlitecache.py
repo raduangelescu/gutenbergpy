@@ -7,8 +7,10 @@ from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 import sqlite3
 import os
 
+
+##
+# SQLite cache implementation
 class SQLiteCache(Cache):
-    #name of the sql commands batch file, used to create the db (should not change)
 
 
     def __init__(self):
@@ -25,7 +27,8 @@ class SQLiteCache(Cache):
         self.table_map[Fields.FILES]    =   '/---/'
         self.table_map[Fields.PUBLISHER]=   'publishers'
         self.table_map[Fields.RIGHTS]   =   'rights'
-
+        ##
+        # Files are package data
         SQLiteCache.DB_CREATE_CACHE_FILENAME         = 'gutenbergindex.db.sql'
         SQLiteCache.DB_CREATE_CACHE_INDICES_FILENAME = 'gutenbergindex_indices.db.sql'
 
@@ -33,23 +36,30 @@ class SQLiteCache(Cache):
         SQLiteCache.DB_CREATE_CACHE_FILENAME = os.path.join(this_dir, SQLiteCache.DB_CREATE_CACHE_FILENAME)
         SQLiteCache.DB_CREATE_CACHE_INDICES_FILENAME = os.path.join(this_dir, SQLiteCache.DB_CREATE_CACHE_INDICES_FILENAME)
 
-    def __insertManyField(self,table,field,theSet):
+    ##
+    # Insert many helper function
+    def __insert_many_field(self, table, field, theSet):
         if len(theSet):
             query = 'INSERT OR IGNORE INTO %s(%s) VALUES (?)' % (table,field)
             self.cursor.executemany(query,map(lambda x: (x,) , theSet))
 
-
-    def __insertManyFieldId(self,table,field1,field2,theSet):
+    ##
+    # Insert many 2 fields helper function
+    def __insert_many_field_id(self, table, field1, field2, theSet):
         if len(theSet):
             query = 'INSERT OR IGNORE INTO %s(%s, %s) VALUES (?,?)' % (table,field1,field2)
             insert_array = map(lambda x: (x[0],x[1]) , theSet)
             self.cursor.executemany(query,insert_array)
 
+    ##
+    # Insert in link table
     def __insertLinks(self,ids,tablename,link1name,link2name):
         if len(ids):
             query = "INSERT INTO %s(%s,%s) VALUES (?,?)" % (tablename,link1name,link2name)
             self.cursor.executemany(query, ids)
 
+    ##
+    # Create the SQL cache
     def create_cache(self, parse_results):
         self.connection = sqlite3.connect(GutenbergCacheSettings.CACHE_FILENAME)
         self.cursor     = self.connection.cursor()
@@ -60,20 +70,18 @@ class SQLiteCache(Cache):
 
         for idx,pt in enumerate(parse_results.field_sets):
             if idx == Fields.FILES:
-                self.__insertManyField('downloadlinkstype','name', pt.setTypes )
+                self.__insert_many_field('downloadlinkstype', 'name', pt.setTypes)
                 self.cursor.executemany(
                     'INSERT OR IGNORE INTO downloadlinks(name,bookid,downloadtypeid) VALUES (?,?,?)'
                     , map(lambda x: (x[0], x[1], x[2]), parse_results.field_sets[Fields.FILES].setLinks))
 
             elif pt.needs_book_id():
-                self.__insertManyFieldId(self.table_map[idx], 'name','bookid', pt.set)
+                self.__insert_many_field_id(self.table_map[idx], 'name', 'bookid', pt.set)
             else:
-                self.__insertManyField(self.table_map[idx], 'name', pt.set)
+                self.__insert_many_field(self.table_map[idx], 'name', pt.set)
 
 
         total = len(parse_results.books)
-
-
 
         for idx, book in enumerate(parse_results.books):
             Utils.update_progress_bar("SQLite progress" ,idx,total)
@@ -94,6 +102,8 @@ class SQLiteCache(Cache):
 
         self.connection.close()
 
+    ##
+    # Query function implementation
     def query(self,**kwargs):
         class HelperQuery:
             def __init__(self, tables, query_struct):
@@ -139,7 +149,8 @@ class SQLiteCache(Cache):
             res.append(int(row[0]))
 
         return res
-
+    ##
+    # Native query function implementation
     def native_query(self,sql_query):
         if self.cursor is None or self.connection is None:
             self.connection = sqlite3.connect(GutenbergCacheSettings.CACHE_FILENAME)

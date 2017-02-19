@@ -1,3 +1,5 @@
+##
+# The main fields of a book
 class Fields:  #Fields we will have in the caches db for a book entry
     TITLE         = 0
     SUBJECT       = 1

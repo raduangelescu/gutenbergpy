@@ -1,6 +1,9 @@
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 from gutenbergpy.orderedset import OrderedSet
 
+
+##
+# Helper for parsing a rdf file item
 class ParseItem:
     def __init__(self,xpath):
         self.xPath          = xpath
