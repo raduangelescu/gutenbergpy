@@ -4,7 +4,6 @@ from sys import version_info
 from setuptools import find_packages
 from setuptools import setup
 
-from glob import glob
 
 def requirements_for(version=None):
     suffix = '-py%s' % version if version is not None else ''
@@ -21,7 +20,7 @@ def requirements_for(version=None):
 def install_requires():
     return requirements_for() | requirements_for(version_info.major)
 
-   
+
 setup(
     name='GutenbergPy',
     version='0.1.2',
@@ -35,4 +34,4 @@ setup(
     description='Library to create and interogate local cache for Project Gutenberg',
     long_description=open('README.rst').read(),
     include_package_data=True,
-    install_requires=install_requires())
+    install_requires=install_requires() )

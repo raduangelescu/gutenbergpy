@@ -1,8 +1,9 @@
-#THIS CODE IS ADAPTED FROM https://github.com/LuminosoInsight/ordered-set
+# THIS CODE IS ADAPTED FROM https://github.com/LuminosoInsight/ordered-set
 SLICE_ALL = slice(None)
 __version__ = '2.0.1'
 
 import collections
+
 
 def is_iterable(obj):
     """
@@ -25,6 +26,7 @@ class OrderedSet(collections.MutableSet):
     An OrderedSet is a custom MutableSet that remembers its order, so that
     every entry has an index that can be looked up.
     """
+
     def __init__(self, iterable=None):
         self.items = []
         self.map = {}
@@ -58,7 +60,7 @@ class OrderedSet(collections.MutableSet):
             return OrderedSet([self.items[i] for i in index])
         else:
             raise TypeError("Don't know how to index an OrderedSet by %r" %
-                    index)
+                            index)
 
     def copy(self):
         return OrderedSet(self)
@@ -71,7 +73,7 @@ class OrderedSet(collections.MutableSet):
             # This could have been done more gracefully by always putting the state
             # in a tuple, but this way is backwards- and forwards- compatible with
             # previous versions of OrderedSet.
-            return (None,)
+            return None,
         else:
             return list(self)
 
@@ -95,6 +97,7 @@ class OrderedSet(collections.MutableSet):
             self.map[key] = len(self.items)
             self.items.append(key)
         return self.map[key] + 1
+
     append = add
 
     def update(self, sequence):
@@ -183,4 +186,3 @@ class OrderedSet(collections.MutableSet):
             return False
         else:
             return set(self) == other_as_set
-

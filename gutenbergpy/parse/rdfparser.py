@@ -13,10 +13,12 @@ from gutenbergpy.utils                  import Utils
 
 ##
 # The rdf parser
+# noinspection PyClassHasNoInit
 class RdfParser:
     ##
     # The main funciton, this actually parses the rdf files from the downloaded cache
-    def do(self):
+    @staticmethod
+    def do():
         result = RDFParseResults()
 
         result.field_sets = Fields.FIELD_COUNT * [None]
@@ -47,7 +49,7 @@ class RdfParser:
                 else:
                     res[idx_field] = pt.do(doc,idx+1)
 
-            gutenberg_book_id = int(dir);
+            gutenberg_book_id = int(dir)
 
             date_issued_x   = doc.xpath('//dcterms:issued/text()', namespaces=GutenbergCacheSettings.NS)
             num_downloads_x = doc.xpath('//pgterms:downloads/text()',namespaces=GutenbergCacheSettings.NS)

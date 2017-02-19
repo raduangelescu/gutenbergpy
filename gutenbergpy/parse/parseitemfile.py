@@ -5,9 +5,11 @@ from gutenbergpy.orderedset import OrderedSet
 
 ##
 # Parser helper for download links
+# noinspection PyMethodOverriding
 class ParseItemFiles(ParseItem):
 
-    def __init__(self,xpath):
+    def __init__(self, xpath):
+        ParseItem.__init__(self, xpath)
         self.xPath = xpath
         self.setTypes = OrderedSet()
         self.setLinks = OrderedSet()
@@ -15,7 +17,8 @@ class ParseItemFiles(ParseItem):
     def needs_book_id(self):
         return True
 
-    def add(self,theset, xpath_result, ret, book_id,type_id):
+    @staticmethod
+    def add(theset, xpath_result, book_id, type_id):
         text = xpath_result.replace("\"", "'")
         index = theset.index(text)
         if index is not -1:
@@ -24,7 +27,8 @@ class ParseItemFiles(ParseItem):
             index = theset.add((text, book_id,type_id))
         return index
 
-    def add_simple(self, the_set, xpath_result):
+    @staticmethod
+    def add_simple(the_set, xpath_result):
         text = xpath_result.replace("\"", "'")
         return the_set.add(text)
 
@@ -39,12 +43,7 @@ class ParseItemFiles(ParseItem):
 
                 if xpath_results_link and xpath_results_type:
                     type_id = self.add_simple( self.setTypes, xpath_results_type[0])
-                    link_id = self.add(self.setLinks, xpath_results_link[0], arr, book_id,type_id)
+                    link_id = self.add(self.setLinks, xpath_results_link[0], book_id, type_id)
 
                     arr.append(link_id)
-
-                xpath_results_type = None
-                xpath_results_link = None
-
-            book_files = None
         return arr

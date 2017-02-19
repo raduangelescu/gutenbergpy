@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
+# encoding=utf8 
 from __future__ import absolute_import, unicode_literals
 
 import gzip
 import os
 import errno
+import httplib
 from contextlib import closing
-import requests
-
+from urllib import urlopen
+from urlparse import urlparse
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 
 ##
@@ -68,7 +70,6 @@ TEXT_START_MARKERS = frozenset((
     '                this Project Gutenberg edition.',
 ))
 
-
 TEXT_END_MARKERS = frozenset((
     "*** END OF THE PROJECT GUTENBERG",
     "*** END OF THIS PROJECT GUTENBERG",
@@ -98,9 +99,9 @@ TEXT_END_MARKERS = frozenset((
     " *** END OF THIS PROJECT GUTENBERG",
 ))
 
+LEGALESE_START_MARKERS = frozenset(("<<THIS ELECTRONIC VERSION OF",))
+LEGALESE_END_MARKERS = frozenset(("SERVICE THAT CHARGES FOR DOWNLOAD",))
 
-LEGALESE_START_MARKERS  = frozenset(("<<THIS ELECTRONIC VERSION OF",))
-LEGALESE_END_MARKERS    = frozenset(("SERVICE THAT CHARGES FOR DOWNLOAD",))
 
 ##
 # adapted from https://github.com/c-w/Gutenberg/blob/master/gutenberg/acquire/text.py
@@ -110,6 +111,7 @@ def get_text_dir_from_index(index):
     subdir_part = "/".join(all_but_last_digit)
     subdir = "{0}/{1}".format(subdir_part, index)  # etextno not zfilled
     return subdir
+
 
 ##
 # adapted from https://github.com/c-w/Gutenberg/blob/master/gutenberg/acquire/text.py
@@ -128,8 +130,11 @@ def _format_download_uri(index):
             path=path,
             etextno=index,
             extension=extension)
-        response = requests.head(uri)
-        if response.ok:
+        p = urlparse(uri)
+        conn = httplib.HTTPConnection(p.netloc)
+        conn.request('HEAD', p.path)
+        resp = conn.getresponse()
+        if resp.status < 400 :
             return uri
     raise None
 
@@ -137,31 +142,29 @@ def _format_download_uri(index):
 ##
 # adapted from https://github.com/c-w/Gutenberg/blob/master/gutenberg/acquire/text.py
 def get_text_by_id(index):
-    file_cache_location = "%s%d%s"%(GutenbergCacheSettings.TEXT_FILES_CACHE_FOLDER, index,'.txt.gz')
+    file_cache_location = "%s%d%s" % (GutenbergCacheSettings.TEXT_FILES_CACHE_FOLDER, index, '.txt.gz')
     if not os.path.exists(file_cache_location):
         try:
             os.makedirs(os.path.dirname(file_cache_location))
         except OSError as ex:
             if ex.errno != errno.EEXIST:
                 raise
-
         download_uri = _format_download_uri(index)
-        response = requests.get(download_uri)
-        text = response.text
+
+        text = urlopen(download_uri).read().decode('cp1252')
         with closing(gzip.open(file_cache_location, 'w')) as cache:
             cache.write(text.encode('utf-8'))
 
     with closing(gzip.open(file_cache_location, 'r')) as cache:
         text = cache.read().decode('utf-8')
-    return text
+    return text.encode('utf-8')
 
 
 ##
 # this function is 100% from https://github.com/c-w/Gutenberg/blob/master/gutenberg/cleanup/strip_headers.py
 def strip_headers(text):
-
-    lines   = text.splitlines()
-    sep     = str(os.linesep)
+    lines = text.splitlines()
+    sep = str(os.linesep)
 
     out = []
     i = 0
@@ -173,7 +176,7 @@ def strip_headers(text):
 
         if i <= 600:
             # Check if the header ends here
-            if any(line.startswith(token) for token in TEXT_START_MARKERS):
+            if any(line.startswith(token.encode('utf-8')) for token in TEXT_START_MARKERS):
                 reset = True
 
             # If it's the end of the header, delete the output produced so far.
@@ -185,17 +188,17 @@ def strip_headers(text):
 
         if i >= 100:
             # Check if the footer begins here
-            if any(line.startswith(token) for token in TEXT_END_MARKERS):
+            if any(line.startswith(token.encode('utf-8')) for token in TEXT_END_MARKERS):
                 footer_found = True
 
             # If it's the beginning of the footer, stop output
             if footer_found:
                 break
 
-        if any(line.startswith(token) for token in LEGALESE_START_MARKERS):
+        if any(line.startswith(token.encode('utf-8')) for token in LEGALESE_START_MARKERS):
             ignore_section = True
             continue
-        elif any(line.startswith(token) for token in LEGALESE_END_MARKERS):
+        elif any(line.startswith(token.encode('utf-8')) for token in LEGALESE_END_MARKERS):
             ignore_section = False
             continue
 

@@ -64,6 +64,7 @@ class SQLiteCache(Cache):
         self.connection = sqlite3.connect(GutenbergCacheSettings.CACHE_FILENAME)
         self.cursor     = self.connection.cursor()
 
+        # noinspection PyUnresolvedReferences
         create_query = open(SQLiteCache.DB_CREATE_CACHE_FILENAME, 'r').read()
         self.cursor.executescript(create_query)
         self.connection.commit()
@@ -89,12 +90,13 @@ class SQLiteCache(Cache):
             self.__insertLinks(map(lambda x: (x,book_id) , book.authors_id),'book_authors','authorid','bookid')
             self.__insertLinks(map(lambda x: (x,book_id) , book.subjects_id),'book_subjects','subjectid','bookid')
 
-            self.cursor.execute("INSERT OR IGNORE INTO books(publisherid,dateissued,rightsid,numdownloads,languageid,bookshelveid,gutenbergbookid,typeid) " \
-                    "VALUES (?,?,?,?,?,?,?,?)" , (book.publisher_id, book.date_issued, book.rights_id,
+            self.cursor.execute("INSERT OR IGNORE INTO books(publisherid,dateissued,rightsid,numdownloads,languageid,bookshelveid,gutenbergbookid,typeid) "
+                                "VALUES (?,?,?,?,?,?,?,?)" , (book.publisher_id, book.date_issued, book.rights_id,
                                                 book.num_downloads,book.language_id,book.bookshelf_id,book.gutenberg_book_id,book.type_id))
 
         self.connection.commit()
 
+        # noinspection PyUnresolvedReferences
         create_indices_query = open(SQLiteCache.DB_CREATE_CACHE_INDICES_FILENAME, 'r').read()
         self.cursor.executescript(create_indices_query)
         self.connection.commit()
@@ -134,15 +136,15 @@ class SQLiteCache(Cache):
         ]
         runtime  = list(filter(lambda x: x.query_struct[2] , helpers))
 
-        query = "SELECT DISTINCT books.gutenbergbookid FROM books";
+        query = "SELECT DISTINCT books.gutenbergbookid FROM books"
         for q in runtime:
             query = "%s,%s"% (query ,','.join(map(str,  q.tables)))
-        query = "%s WHERE "%(query)
+        query = "%s WHERE " % query
 
         for idx,q in enumerate(runtime):
             query = "%s %s and %s in (%s) " % (query,q.query_struct[0],q.query_struct[1],','.join(map(lambda x: "'%s'"%(str(x)), q.query_struct[2])))
             if idx != len(runtime) -1:
-                query = "%s and "%(query)
+                query = "%s and " % query
 
         res = []
         for row in self.native_query(query):
