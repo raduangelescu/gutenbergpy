@@ -6,13 +6,8 @@ GutenbergPy
 Overview
 ========
 
-.. image:: https://github.com/raduangelescu/gutenbergpy/blob/master/sqlite.png
-    :alt: SQLITE 
-    :align: center
-    
 .. image:: https://github.com/raduangelescu/gutenbergpy/blob/master/mongodb.png
     :alt: MONGODB
-
     :align: center
     
 This package makes filtering and getting information from `Project
