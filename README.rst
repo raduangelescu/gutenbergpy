@@ -8,7 +8,8 @@ Overview
 
 .. image:: https://github.com/raduangelescu/gutenbergpy/blob/master/sqlite.png
     :alt: SQLITE 
-    :width: 50%
+    :width: 25%
+    :height: 25%
     :align: left
     
 .. image::https://github.com/raduangelescu/gutenbergpy/blob/master/mongodb.png
