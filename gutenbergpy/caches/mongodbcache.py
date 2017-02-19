@@ -45,25 +45,31 @@ class MongodbCache(Cache):
             json = self.__get_book_json(book,parse_results.field_sets)
             self.db.books.insert_one(json)
 
+    def create_or_dict(self,name,newname, dt,out):
+        if dt.has_key(name):
+            dict = {}
+            lst = []
+            for e in dt[name]:
+                lst.append ({name:e})
+            out.extend(lst)
+
     def query(self,**kwargs):
         query = {}
-        if kwargs.has_key('languages'):
-            query['languages'] = kwargs['languages']
-        if kwargs.has_key('authors'):
-            query['authors'] = kwargs['authors']
-        if kwargs.has_key('types'):
-            query['types'] = kwargs['types']
-        if kwargs.has_key('titles'):
-            query['titles'] = kwargs['titles']
-        if kwargs.has_key('subjects'):
-            query['subjects'] = kwargs['subjects']
-        if kwargs.has_key('publishers'):
-            query['publishers'] = kwargs['publishers']
-        if kwargs.has_key('bookshelves'):
-            query['bookshelves'] = kwargs['bookshelves']
-
-        print self.db.books.find(query)
+        lst = []
+        self.create_or_dict('languages','languages',kwargs,lst)
+        self.create_or_dict('authors','authors', kwargs, lst)
+        self.create_or_dict('types','type', kwargs, lst)
+        self.create_or_dict('titles', 'titles', kwargs, lst)
+        self.create_or_dict('subjects', 'subjects', kwargs, lst)
+        self.create_or_dict('publishers', 'publisher', kwargs, lst)
+        self.create_or_dict('bookshelves', 'bookshelves', kwargs, lst)
+        self.create_or_dict('gutenberg_book_id', 'gutenberg_book_id', kwargs, lst)
+        query['$or'] = lst
+        lst =[]
+        for res in  self.native_query(query):
+            lst.append(res["gutenberg_book_id"])
+        return lst
     ##
     # Native query function implementation
-    def native_query(self,sql_query):
-        pass
+    def native_query(self,mongodb_query):
+        return self.db.books.find(mongodb_query)
