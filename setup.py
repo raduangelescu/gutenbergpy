@@ -23,7 +23,7 @@ def install_requires():
 
 setup(
     name='GutenbergPy',
-    version='0.1.2',
+    version='0.1.3',
     author='Radu Angelescu',
     author_email='raduangelescu+pypi@gmail.com',
     packages=find_packages(),
