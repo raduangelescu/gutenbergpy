@@ -1,3 +1,5 @@
+import os
+
 # noinspection PyClassHasNoInit
 class GutenbergCacheSettings:
     # name of the gutenberg link for the rdf arhive (should not change)
@@ -5,13 +7,13 @@ class GutenbergCacheSettings:
     # name of the caches file name (sqlite db)
     CACHE_FILENAME = 'gutenbergindex.db'
     # name of the rdf unpack directory (this will be used when unpacking the rdf tar)
-    CACHE_RDF_UNPACK_DIRECTORY = 'cache\\epub\\'
+    CACHE_RDF_UNPACK_DIRECTORY = os.path.join('cache',"epub")
     # name of the downloaded rdf arhive
     CACHE_RDF_ARCHIVE_NAME = 'rdf-files.tar.bz2'
     # number of #'s shown in loading bar (common to all loading bars)
     DOWNLOAD_NUM_DIVS = 20
     # text files cache folder
-    TEXT_FILES_CACHE_FOLDER = 'texts\\'
+    TEXT_FILES_CACHE_FOLDER = 'texts'
     ##########READONLY VARIABLES (please put readonly variables here)
     # namespace used for the rds parsing (should not change)
     NS = {

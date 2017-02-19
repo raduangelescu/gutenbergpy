@@ -1,4 +1,5 @@
 from os   import listdir
+from os   import path
 from lxml import etree
 
 from gutenbergpy.parse.cachefields      import Fields
@@ -39,7 +40,7 @@ class RdfParser:
         for idx, dir in enumerate(dirs):
             processing_str = "Processing progress: %d / %d" % (idx,total)
             Utils.update_progress_bar(processing_str,idx,total)
-            file_path = "%s%s\pg%s.rdf" % (GutenbergCacheSettings.CACHE_RDF_UNPACK_DIRECTORY,dir,dir)
+            file_path = path.join(GutenbergCacheSettings.CACHE_RDF_UNPACK_DIRECTORY,dir,'pg%s.rdf'%(dir))
             doc = etree.parse(file_path,etree.ETCompatXMLParser())
 
             res = Fields.FIELD_COUNT * [-1]

@@ -142,7 +142,7 @@ def _format_download_uri(index):
 ##
 # adapted from https://github.com/c-w/Gutenberg/blob/master/gutenberg/acquire/text.py
 def get_text_by_id(index):
-    file_cache_location = "%s%d%s" % (GutenbergCacheSettings.TEXT_FILES_CACHE_FOLDER, index, '.txt.gz')
+    file_cache_location = os.path.join(GutenbergCacheSettings.TEXT_FILES_CACHE_FOLDER, str(index)+'.txt.gz')
     if not os.path.exists(file_cache_location):
         try:
             os.makedirs(os.path.dirname(file_cache_location))
