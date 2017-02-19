@@ -14,6 +14,8 @@ class GutenbergCacheSettings:
     DOWNLOAD_NUM_DIVS = 20
     # text files cache folder
     TEXT_FILES_CACHE_FOLDER = 'texts'
+    # mongo db connection server
+    MONGO_DB_CONNECTION_SERVER ="mongodb://localhost:27017"
     ##########READONLY VARIABLES (please put readonly variables here)
     # namespace used for the rds parsing (should not change)
     NS = {
@@ -42,3 +44,5 @@ class GutenbergCacheSettings:
             GutenbergCacheSettings.CACHE_RDF_DOWNLOAD_LINK = kwargs['CacheRDFDownloadLink']
         if kwargs.has_key('TextFilesCacheFolder'):
             GutenbergCacheSettings.TEXT_FILES_CACHE_FOLDER = kwargs['TextFilesCacheFolder']
+        if kwargs.has_key('MongoDBCacheServer'):
+            GutenbergCacheSettings.MONGO_DB_CONNECTION_SERVER = kwargs['MongoDBCacheServer']
