@@ -71,7 +71,7 @@ for debugging/better control you have these boolean options on create
     - *cache*    writes the cache
 
 .. sourcecode :: python
-
+    
     GutenbergCache.create(refresh=True, download=True, unpack=True, parse=True, cache=True, deleteTemp=True)
 
 for even better control you may set the GutenbergCacheSettings
@@ -83,7 +83,9 @@ for even better control you may set the GutenbergCacheSettings
     - *TextFilesCacheFolder*
 
 .. sourcecode :: python
-    GutenbergCacheSettings.set(CacheFilename="", CacheUnpackDir="", CacheArchiveName="", ProgressBarMaxLength="",        CacheRDFDownloadLink="", TextFilesCacheFolder="")
+
+    GutenbergCacheSettings.set( CacheFilename="", CacheUnpackDir="", 
+    CacheArchiveName="", ProgressBarMaxLength="", CacheRDFDownloadLink="", TextFilesCacheFolder="")
 
 After doing a create you need to wait, it will be over in about 5 minutes depending on your internet speed and computer power
 Now you can do queries
