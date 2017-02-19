@@ -10,12 +10,13 @@ Overview
     :alt: SQLITE 
     :width: 25%
     :height: 25%
-    :align: left
+    :align: center
     
 .. image::https://github.com/raduangelescu/gutenbergpy/blob/master/mongodb.png
     :alt: MONGODB
-    :width: 50%
-    :align: right
+    :width: 25%
+    :height: 25%
+    :align: center
     
 This package makes filtering and getting information from `Project
 Gutenberg <http://www.gutenberg.org>`_ easier from python.
