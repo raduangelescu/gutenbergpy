@@ -19,7 +19,7 @@ The package:
 - Downloads and cleans raw text from gutenberg books
 
 
-The package has been tested with Python  2.7
+The package has been tested with Python  2.7 on both Windows and Linux
 It is faster, smaller and less third-party intensive alternative to https://github.com/c-w/Gutenberg 
 
 Installation
