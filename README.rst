@@ -14,7 +14,7 @@ but may be freely used by anybody.
 
 The package:
 
-- Generates a local cache (of all gutenberg informations) that you can interogate to get book ids
+- Generates a local cache (of all gutenberg informations) that you can interogate to get book ids. The Local cache may be sqlite (default) or mongodb (for wich you need to have installed the pymongodb packet)
 
 - Downloads and cleans raw text from gutenberg books
 
@@ -60,7 +60,10 @@ To do this you first need to create the cache (this is a one time thing per os, 
 .. sourcecode :: python
 
     from gutenbergpy.gutenbergcache import GutenbergCache
+    #for sqlite
     GutenbergCache.create()
+    #for mongodb
+    GutenbergCache.create(type=GutenbergCacheTypes.CACHE_TYPE_MONGODB)
     
 for debugging/better control you have these boolean options on create
 
@@ -81,11 +84,11 @@ for even better control you may set the GutenbergCacheSettings
     - *ProgressBarMaxLength*
     - *CacheRDFDownloadLink*
     - *TextFilesCacheFolder*
-
+    - *MongoDBCacheServer*
 .. sourcecode :: python
 
     GutenbergCacheSettings.set( CacheFilename="", CacheUnpackDir="", 
-    CacheArchiveName="", ProgressBarMaxLength="", CacheRDFDownloadLink="", TextFilesCacheFolder="")
+    CacheArchiveName="", ProgressBarMaxLength="", CacheRDFDownloadLink="", TextFilesCacheFolder="", MongoDBCacheServer="")
 
 After doing a create you need to wait, it will be over in about 5 minutes depending on your internet speed and computer power
 (On a i7 with gigabit connection and ssd it finishes in about 1 minute)
@@ -93,7 +96,9 @@ After doing a create you need to wait, it will be over in about 5 minutes depend
 Get the cache
 
 .. sourcecode :: python
-
+    #for mongodb
+    cache = GutenbergCache.get_cache(GutenbergCacheTypes.CACHE_TYPE_MONGODB)
+    #for sqlite
     cache  = GutenbergCache.get_cache()
 
 Now you can do queries
@@ -117,12 +122,18 @@ Standard query fields:
 Or do a native query on the sqlite database
 
 .. sourcecode :: python
-    
+    #python
     cache.native_query("SELECT * FROM books")
-
-For custom queries take a look at the database scheme:
+    #mongodb
+    cache.native_query({type:'Text'}}
+    
+For SQLITE custom queries take a look at the SQLITE database scheme:
 
 .. image:: https://github.com/raduangelescu/gutenbergpy/blob/master/sqlitecheme.png
     :alt: SQLITE database scheme
     :width: 100%
     :align: center
+    
+For MongoDB queries you have all the books collection. Each book with the following fields:
+
+    - book(publisher, rights, language, book_shelf, gutenberg_book_id,  date_issued, num_downloads, titles, subjects, authors, files ,type)
