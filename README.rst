@@ -9,6 +9,7 @@ Overview
 .. image:: https://github.com/raduangelescu/gutenbergpy/blob/master/mongodb.png
     :alt: MONGODB
     :align: center
+    :size: 25%
     
 This package makes filtering and getting information from `Project
 Gutenberg <http://www.gutenberg.org>`_ easier from python.
