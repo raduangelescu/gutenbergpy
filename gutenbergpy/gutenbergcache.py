@@ -24,10 +24,7 @@ class GutenbergCache:
     @staticmethod
     def get_cache(type=GutenbergCacheTypes.CACHE_TYPE_SQLITE):
             if type == GutenbergCacheTypes.CACHE_TYPE_SQLITE:
-                if path.isfile(GutenbergCacheSettings.CACHE_FILENAME):
-                    return SQLiteCache()
-                elif path.isfile(GutenbergCacheSettings.CACHE_FILENAME) is False :
-                    print("NO CACHE FOUND, PLEASE CALL create() FUNCTION TO POPULATE CACHE")
+                return SQLiteCache()
             elif type == GutenbergCacheTypes.CACHE_TYPE_MONGODB:
                 return MongodbCache()
             print("CACHE TYPE UNKNOWN")
