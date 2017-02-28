@@ -55,7 +55,7 @@ class RdfParser:
             date_issued_x   = doc.xpath('//dcterms:issued/text()', namespaces=GutenbergCacheSettings.NS)
             num_downloads_x = doc.xpath('//pgterms:downloads/text()',namespaces=GutenbergCacheSettings.NS)
 
-            date_issued       = '1000-10-10' if not date_issued_x or date_issued_x[0] =='None' else date_issued_x[0]
+            date_issued       = '1000-10-10' if not date_issued_x or date_issued_x[0] =='None' else str(date_issued_x[0])
             num_downloads     =  -1 if not num_downloads_x else int(num_downloads_x[0])
             publisher_id      =  -1 if not res[Fields.PUBLISHER] else res[Fields.PUBLISHER][0]
             rights_id         =  -1 if not res[Fields.RIGHTS]    else res[Fields.RIGHTS][0]

@@ -9,7 +9,7 @@ from setuptools import setup
 
 setup(
     name='GutenbergPy',
-    version='0.1.7',
+    version='0.2.0',
     author='Radu Angelescu',
     author_email='raduangelescu+pypi@gmail.com',
     packages=find_packages(),

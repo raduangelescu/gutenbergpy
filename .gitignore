@@ -10,3 +10,7 @@ dist/
 .idea/workspace.xml
 texts/
 gutenbergindex.db
+cache/
+rdf-files.tar.bz2
+memory.pickle
+memusage.txt
