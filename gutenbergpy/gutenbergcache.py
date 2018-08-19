@@ -39,6 +39,7 @@ class GutenbergCache:
         download    = True  if kwargs.has_key('download') is False else kwargs['download']
         unpack      = True  if kwargs.has_key('unpack') is False else kwargs['unpack']
         parse       = True  if kwargs.has_key('parse') is False else kwargs['parse']
+        cache       = True  if kwargs.has_key('cache') is False else kwargs['cache']
         deleteTmp   = True  if kwargs.has_key('deleteTemp') is False else kwargs['deleteTemp']
 
         if path.isfile(GutenbergCacheSettings.CACHE_FILENAME) and refresh and cache_type == GutenbergCacheTypes.CACHE_TYPE_SQLITE:
