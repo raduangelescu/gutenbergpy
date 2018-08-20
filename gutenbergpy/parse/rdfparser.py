@@ -34,16 +34,12 @@ class RdfParser:
         result.field_sets[Fields.RIGHTS]    = ParseItem( xpath =['//dcterms:rights/text()'])
 
 
-        dirs  =  listdir(GutenbergCacheSettings.CACHE_RDF_UNPACK_DIRECTORY)
+        dirs  =  [d for d in listdir(GutenbergCacheSettings.CACHE_RDF_UNPACK_DIRECTORY) if not d.startswith("DELETE")]
         total = len(dirs)
 
         for idx, dir in enumerate(dirs):
             processing_str = "Processing progress: %d / %d" % (idx,total)
             Utils.update_progress_bar(processing_str,idx,total)
-
-            if dir.startswith("DELETE"):
-                continue
-
             file_path = path.join(GutenbergCacheSettings.CACHE_RDF_UNPACK_DIRECTORY,dir,'pg%s.rdf'%(dir))
             doc = etree.parse(file_path,etree.ETCompatXMLParser())
 
