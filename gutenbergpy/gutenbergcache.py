@@ -62,7 +62,7 @@ class GutenbergCache:
             result = parser.do()
             print('RDF PARSING took ' + str(time.time() - t0))
 
-            if kwargs['cache']:
+            if cache:
                 t0 = time.time()
                 cache = GutenbergCache.get_cache(cache_type)
                 cache.create_cache(result)
