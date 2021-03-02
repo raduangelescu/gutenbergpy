@@ -54,7 +54,7 @@ class SQLiteCache(Cache):
     ##
     # Insert in link table
     def __insertLinks(self,ids,tablename,link1name,link2name):
-        if len(ids):
+        if len(list(ids)):
             query = "INSERT INTO %s(%s,%s) VALUES (?,?)" % (tablename,link1name,link2name)
             self.cursor.executemany(query, ids)
 
@@ -113,26 +113,26 @@ class SQLiteCache(Cache):
                 self.query_struct   = query_struct
         helpers=[
             HelperQuery(['languages'], ('languages.id = books.languageid', 'languages.name',
-                        kwargs['languages'] if kwargs.has_key('languages') else None)),
+                        kwargs['languages'] if 'languages' in kwargs else None)),
             HelperQuery(['authors', 'book_authors'],
                         ('authors.id = book_authors.authorid and books.id = book_authors.bookid', 'authors.name',
-                         kwargs['authors'] if kwargs.has_key('authors') else None)),
+                         kwargs['authors'] if 'authors' in kwargs else None)),
             HelperQuery(['types'],('books.typeid = types.id', 'types.name',
-                         kwargs['types'] if kwargs.has_key('types') else None)),
+                         kwargs['types'] if 'types' in kwargs else None)),
             HelperQuery(['titles'],('titles.bookid = books.id', 'titles.name',
-                         kwargs['titles'] if kwargs.has_key('titles') else None)),
+                         kwargs['titles'] if 'titles' in kwargs else None)),
             HelperQuery(['subjects', 'book_subjects'],
                         ('subjects.id = book_subjects.bookid and books.id = book_subjects.subjectid ', 'subjects.name',
-                         kwargs['subjects'] if kwargs.has_key('subjects') else None)),
+                         kwargs['subjects'] if 'subjects' in kwargs else None)),
             HelperQuery(['publishers'],
                         ('publishers.id = books.publisherid', 'publishers.name',
-                         kwargs['publishers'] if kwargs.has_key('publishers') else None)),
+                         kwargs['publishers'] if 'publishers' in kwargs else None)),
             HelperQuery(['bookshelves'],
                         ('bookshelves.id = books.bookshelveid', 'bookshelves.name',
-                         kwargs['bookshelves'] if kwargs.has_key('bookshelves') else None)),
+                         kwargs['bookshelves'] if 'bookshelves' in kwargs else None)),
             HelperQuery(['downloadlinks','downloadlinkstype'],
                         ('downloadlinks.downloadtypeid =  downloadlinkstype.id and downloadlinks.bookid = books.id', 'downloadlinkstype.name',
-                         kwargs['downloadtype'] if kwargs.has_key('downloadtype') else None))
+                         kwargs['downloadtype'] if 'downloadtype' in kwargs else None))
         ]
         runtime  = list(filter(lambda x: x.query_struct[2] , helpers))
 

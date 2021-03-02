@@ -1,7 +1,7 @@
 from __future__ import print_function
 from os import path
 import time
-from utils import Utils
+from gutenbergpy.utils import Utils
 
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 from gutenbergpy.parse.rdfparser import RdfParser
@@ -34,13 +34,13 @@ class GutenbergCache:
     # Create the cache
     @staticmethod
     def create(**kwargs):
-        cache_type  = GutenbergCacheTypes.CACHE_TYPE_SQLITE if kwargs.has_key('type') is False else kwargs['type']
-        refresh     = True  if kwargs.has_key('refresh') is False else kwargs['refresh']
-        download    = True  if kwargs.has_key('download') is False else kwargs['download']
-        unpack      = True  if kwargs.has_key('unpack') is False else kwargs['unpack']
-        parse       = True  if kwargs.has_key('parse') is False else kwargs['parse']
-        cache       = True  if kwargs.has_key('cache') is False else kwargs['cache']
-        deleteTmp   = True  if kwargs.has_key('deleteTemp') is False else kwargs['deleteTemp']
+        cache_type  = GutenbergCacheTypes.CACHE_TYPE_SQLITE if 'type' not in kwargs else kwargs['type']
+        refresh     = True  if 'refresh'  not in kwargs else kwargs['refresh']
+        download    = True  if 'download' not in kwargs else kwargs['download']
+        unpack      = True  if 'unpack'   not in kwargs else kwargs['unpack']
+        parse       = True  if 'parse'    not in kwargs else kwargs['parse']
+        cache       = True  if 'cache'    not in kwargs else kwargs['cache']
+        deleteTmp   = True  if 'deleteTemp' not in kwargs else kwargs['deleteTemp']
 
         if path.isfile(GutenbergCacheSettings.CACHE_FILENAME) and refresh and cache_type == GutenbergCacheTypes.CACHE_TYPE_SQLITE:
             print('Cache already exists')

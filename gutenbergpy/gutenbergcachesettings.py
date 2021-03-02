@@ -32,17 +32,17 @@ class GutenbergCacheSettings:
     # Used to set the settings global variables
     @staticmethod
     def set(**kwargs):
-        if kwargs.has_key('CacheFilename'):
+        if 'CacheFilename' in kwargs:
             GutenbergCacheSettings.CACHE_FILENAME = kwargs['CacheFilename']
-        if kwargs.has_key('CacheUnpackDir'):
+        if 'CacheUnpackDir' in kwargs:
             GutenbergCacheSettings.CACHE_RDF_UNPACK_DIRECTORY = kwargs['CacheUnpackDir']
-        if kwargs.has_key('CacheArchiveName'):
+        if 'CacheArchiveName' in kwargs:
             GutenbergCacheSettings.CACHE_RDF_ARCHIVE_NAME = kwargs['CacheArchiveName']
-        if kwargs.has_key('ProgressBarMaxLength'):
+        if 'ProgressBarMaxLength' in kwargs:
             GutenbergCacheSettings.DOWNLOAD_NUM_DIVS = kwargs['ProgressBarMaxLength']
-        if kwargs.has_key('CacheRDFDownloadLink'):
+        if 'CacheRDFDownloadLink' in kwargs:
             GutenbergCacheSettings.CACHE_RDF_DOWNLOAD_LINK = kwargs['CacheRDFDownloadLink']
-        if kwargs.has_key('TextFilesCacheFolder'):
+        if 'TextFilesCacheFolder' in kwargs:
             GutenbergCacheSettings.TEXT_FILES_CACHE_FOLDER = kwargs['TextFilesCacheFolder']
-        if kwargs.has_key('MongoDBCacheServer'):
+        if 'MongoDBCacheServer' in kwargs:
             GutenbergCacheSettings.MONGO_DB_CONNECTION_SERVER = kwargs['MongoDBCacheServer']

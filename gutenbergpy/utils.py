@@ -3,8 +3,10 @@ import sys
 import os
 import urllib
 import tarfile
-
-from gutenbergcachesettings import GutenbergCacheSettings
+from future.standard_library import install_aliases
+install_aliases()
+import urllib.request
+from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 
 
 ##
@@ -42,8 +44,8 @@ class Utils:
                             force_update=True):  # used to update the progress bar display
         if total_progress % GutenbergCacheSettings.DOWNLOAD_NUM_DIVS == 0 or force_update == True or progress == 0:
             dv = total_progress / GutenbergCacheSettings.DOWNLOAD_NUM_DIVS
-            num_of_sharp = progress / dv
-            num_of_space = (total_progress - progress) / dv
+            num_of_sharp = int(progress / dv)
+            num_of_space = int((total_progress - progress) / dv)
 
             sys.stdout.write("\r %s : [%s%s]" % (type, '#' * num_of_sharp, ' ' * num_of_space))
             sys.stdout.flush()
@@ -65,9 +67,8 @@ class Utils:
     @staticmethod
     def download_file():  # used to download the rdf tar file
         start = time.time()
-        test_file = urllib.URLopener()
-        test_file.retrieve(GutenbergCacheSettings.CACHE_RDF_DOWNLOAD_LINK,
-                           GutenbergCacheSettings.CACHE_RDF_ARCHIVE_NAME, Utils.__report)
+        urllib.request.urlretrieve(GutenbergCacheSettings.CACHE_RDF_DOWNLOAD_LINK,
+                                   GutenbergCacheSettings.CACHE_RDF_ARCHIVE_NAME, Utils.__report)
 
         print ('took %f' % (time.time() - start))
         Utils.download_progress = 0

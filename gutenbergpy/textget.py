@@ -5,10 +5,12 @@ from __future__ import absolute_import, unicode_literals
 import gzip
 import os
 import errno
-import httplib
+import http.client
 from contextlib import closing
-from urllib import urlopen
-from urlparse import urlparse
+from future.standard_library import install_aliases
+install_aliases()
+from urllib.request import urlopen
+from urllib.parse import urlparse
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 
 ##
@@ -131,7 +133,7 @@ def _format_download_uri(index):
             etextno=index,
             extension=extension)
         p = urlparse(uri)
-        conn = httplib.HTTPConnection(p.netloc)
+        conn = http.client.HTTPConnection(p.netloc)
         conn.request('HEAD', p.path)
         resp = conn.getresponse()
         if resp.status < 400 :
@@ -151,7 +153,7 @@ def get_text_by_id(index):
                 raise
         download_uri = _format_download_uri(index)
 
-        text = urlopen(download_uri).read().decode('cp1252')
+        text = urlopen(download_uri).read().decode('utf-8')
         with closing(gzip.open(file_cache_location, 'w')) as cache:
             cache.write(text.encode('utf-8'))
 
@@ -164,8 +166,8 @@ def get_text_by_id(index):
 # this function is 100% from https://github.com/c-w/Gutenberg/blob/master/gutenberg/cleanup/strip_headers.py
 def strip_headers(text):
     lines = text.splitlines()
-    sep = str(os.linesep)
-
+    sep = os.linesep
+    sep = sep.encode('utf-8')
     out = []
     i = 0
     footer_found = False
@@ -203,7 +205,8 @@ def strip_headers(text):
             continue
 
         if not ignore_section:
-            out.append(line.rstrip(sep))
+            stripline = line.rstrip(sep) 
+            out.append(stripline)
             i += 1
 
     return sep.join(out)
