@@ -6,5 +6,5 @@ from setuptools import setup
 
 setup(
     packages=find_packages(),
-    package_data={'gutenberg.caches': ['*.sql']},
+    package_data={'gutenbergpy.caches': ['*.sql']},
     include_package_data=True)

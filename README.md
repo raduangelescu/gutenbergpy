@@ -71,7 +71,7 @@ Or do a native query on the sqlite database
 
 For SQLITE custom queries take a look at the SQLITE database scheme:
 
-![image](https://github.com/raduangelescu/gutenbergpy/blob/master/sqlitecheme.png%0A%20:alt:%20SQLITE%20database%20scheme%0A%20:width:%20100%%0A%20:align:%20center)
+![image](https://github.com/raduangelescu/gutenbergpy/blob/master/sqlitecheme.png?raw=true)
 
 For MongoDB queries you have all the books collection. Each book with the following fields:
 

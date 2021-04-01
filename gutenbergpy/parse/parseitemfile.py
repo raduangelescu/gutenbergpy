@@ -21,7 +21,7 @@ class ParseItemFiles(ParseItem):
     def add(theset, xpath_result, book_id, type_id):
         text = xpath_result.replace("\"", "'")
         index = theset.index(text)
-        if index is not -1:
+        if index != -1:
             theset[text][1] = book_id
         else:
             index = theset.add((text, book_id,type_id))

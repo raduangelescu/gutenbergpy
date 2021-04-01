@@ -14,7 +14,7 @@ class ParseItemTitles(ParseItem):
             for el in xpathResults:
                 text = el.replace("\"", "'")
                 index = self.set.index(text)
-                if index is not -1:
+                if index != -1:
                     self.set[text][1] = book_id
                 else:
                     new_index = self.set.add((text, book_id))
