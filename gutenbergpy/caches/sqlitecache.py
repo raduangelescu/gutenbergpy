@@ -87,8 +87,8 @@ class SQLiteCache(Cache):
         for idx, book in enumerate(parse_results.books):
             Utils.update_progress_bar("SQLite progress" ,idx,total)
             book_id = idx +1
-            self.__insertLinks(map(lambda x: (x,book_id) , book.authors_id),'book_authors','authorid','bookid')
-            self.__insertLinks(map(lambda x: (x,book_id) , book.subjects_id),'book_subjects','subjectid','bookid')
+            self.__insertLinks(list(map(lambda x: (x,book_id) , book.authors_id)),'book_authors','authorid','bookid')
+            self.__insertLinks(list(map(lambda x: (x,book_id) , book.subjects_id)),'book_subjects','subjectid','bookid')
 
             self.cursor.execute("INSERT OR IGNORE INTO books(publisherid,dateissued,rightsid,numdownloads,languageid,bookshelveid,gutenbergbookid,typeid) "
                                 "VALUES (?,?,?,?,?,?,?,?)" , (book.publisher_id, book.date_issued, book.rights_id,
