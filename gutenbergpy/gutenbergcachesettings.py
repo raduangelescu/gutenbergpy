@@ -7,7 +7,7 @@ class GutenbergCacheSettings:
     # name of the caches file name (sqlite db)
     CACHE_FILENAME = 'gutenbergindex.db'
     # name of the rdf unpack directory (this will be used when unpacking the rdf tar)
-    CACHE_RDF_UNPACK_DIRECTORY = os.path.join('export','sunsite','users','gutenbackend','cache','epub')
+    CACHE_RDF_UNPACK_DIRECTORY = os.path.join('cache','epub')
     # name of the downloaded rdf arhive
     CACHE_RDF_ARCHIVE_NAME = 'rdf-files.tar.bz2'
     # number of #'s shown in loading bar (common to all loading bars)
