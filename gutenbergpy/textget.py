@@ -11,6 +11,7 @@ from future.standard_library import install_aliases
 install_aliases()
 from urllib.request import urlopen
 from urllib.parse import urlparse
+import chardet
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 
 ##
@@ -153,13 +154,16 @@ def get_text_by_id(index):
                 raise
         download_uri = _format_download_uri(index)
 
-        text = urlopen(download_uri).read().decode('utf-8')
+        text_bytes = urlopen(download_uri).read()
+        encoding = chardet.detect(text_bytes)["encoding"]
+        text = text_bytes.decode(encoding)
+
         with closing(gzip.open(file_cache_location, 'w')) as cache:
             cache.write(text.encode('utf-8'))
 
     with closing(gzip.open(file_cache_location, 'r')) as cache:
-        text = cache.read().decode('utf-8')
-    return text.encode('utf-8')
+        text = cache.read()
+    return text
 
 
 ##
