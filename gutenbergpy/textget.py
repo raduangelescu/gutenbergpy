@@ -162,8 +162,8 @@ def get_text_by_id(index):
             cache.write(text.encode('utf-8'))
 
     with closing(gzip.open(file_cache_location, 'r')) as cache:
-        text = cache.read()
-    return text
+        text = cache.read().decode('utf-8')
+    return text.encode('utf-8')
 
 
 ##
