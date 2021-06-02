@@ -73,3 +73,9 @@ class GutenbergCache:
             Utils.delete_tmp_files()
 
         print('Done')
+
+    ##
+    # Method to check if the cache exists
+    @staticmethod
+    def exists():
+        return path.isfile(GutenbergCacheSettings.CACHE_FILENAME)
