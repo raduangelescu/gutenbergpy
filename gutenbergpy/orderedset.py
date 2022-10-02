@@ -3,6 +3,10 @@ SLICE_ALL = slice(None)
 __version__ = '2.0.1'
 
 import collections
+try:
+    from collections.abc import MutableSet
+except:
+    from collections import MutableSet
 
 
 def is_iterable(obj):
@@ -21,7 +25,7 @@ def is_iterable(obj):
     return hasattr(obj, '__iter__') and not isinstance(obj, str) and not isinstance(obj, tuple)
 
 
-class OrderedSet(collections.MutableSet):
+class OrderedSet(MutableSet):
     """
     An OrderedSet is a custom MutableSet that remembers its order, so that
     every entry has an index that can be looked up.
