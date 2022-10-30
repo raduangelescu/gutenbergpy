@@ -37,12 +37,40 @@ Downloading a text
 ------------------
 ```
 import gutenbergpy.textget
-#this gets a book by its gutenberg id
-raw_book    = gutenbergpy.textget.get_text_by_id(1000)
-print raw_book
-#this strips the headers from the book
-clean_book  = gutenbergpy.textget.strip_headers(raw_book)
-print clean_book
+
+```
+After importing our module, we can download a text from gutenberg.
+
+```python
+def usage_example():
+    # This gets a book by its gutenberg id number
+    raw_book = gutenbergpy.textget.get_text_by_id(2701) # with headers
+    clean_book = gutenbergpy.textget.strip_headers(raw_book) # without headers
+    return clean_book, raw_book
+```
+The code above can easily be used without the function declaration, this is simply for illustration.
+
+```python
+cleaned_book, raw_book = usage_example()
+
+# Cleaned Book
+print(f'Example phrase from the cleaned book: {" ".join(str(cleaned_book[3000:3050]).split(" "))}')
+# Raw Book
+print(f'Example phrase from the raw book: {" ".join(str(raw_book[3000:3050]).split(" "))}')
+
+```
+The output of the code above is:
+```
+b'rgris.\n\nCHAPTER 93. The Castaway.\n\nCHAPTER 94. A S'
+b'\n\n\n\nMOBY-DICK;\n\nor, THE WHALE.\n\nBy Herman Melville\n\n\n\nCONTENTS\n\nETYMOLOGY.\n\nEXTRACTS (Supplied by a Sub-Sub-Librarian).\n\nCHAPTER 1. Loomings.\n\nCHAPTER 2. The Carpet-Bag.\n\nCHAPTER 3. The Spouter-Inn.\n\nCHAPTER 4. The Counterpane.\n\nCHAPTER 5. Breakfast.\n\nCHAPTER 6. The Street.\n\nCHAPTER 7. The Chapel.\n\nCHAPTER 8. The Pulpit.\n\nCHAPTER 9. The Sermon.\n\nCHAPTER 10. A Bosom Friend.\n\nCHAPTER 11. Nightgown.\n\nCHAPTER 12. Biographical.\n\nCHAPTER 13. Wheelbarrow.\n\nCHAPTER 14. Nantucket.\n\nCHAPTER 15. Chowder.\n\nCHAPTER 16. The Ship.\n\nCHAPTER 17. The Ramadan.\n\nCHAPTER 18. His Mark.\n\nCHAPTER 19. The Prophet.\n\nCHAPTER 20. All Astir.\n\nCHAPTER 21. Going Aboard.\n\nCHAPTER 22. Merry Christmas.\n\nCHAPTER 23. The Lee Shore.\n\nCHAPTER 24. The Advocate.\n\nCHAPTER 25. Postscript.\n\nCHAPTER 26. Knights and Squires.\n\nCHAPTER 27. Knights and Squires.\n\nCHAPTER 28. Ahab.\n\nCHAPTER 29. Enter Ahab; to Him, Stubb.\n\nCHAPTER 30. The Pipe.\n\nCHAPTER 31. Queen Mab.\n\nCHAPTER 32. Cetology.\n\nCHAPTER 33. The Specksnyder.\n\nCHAPTER 34. Th'
+```
+They are both pretty messy, and will need to be cleaned prior to use for NLP etc.
+
+The Raw book:
+```output
+b'b\xe2\x80\x99s Supper.\r\n\r\nCHAPTER 65. The Whale as a Dish.\r'
+b'\n\n\n\nMOBY-DICK;\n\nor, THE WHALE.\n\nBy Herman Melville\n\n\n\nCONTENTS\n\nETYMOLOGY.\n\nEXTRACTS (Supplied by a Sub-Sub-Librarian).\n\nCHAPTER 1. Loomings.\n\nCHAPTER 2. The Carpet-Bag.\n\nCHAPTER 3. The Spouter-Inn.\n\nCHAPTER 4. The Counterpane.\n\nCHAPTER 5. Breakfast.\n\nCHAPTER 6. The Street.\n\nCHAPTER 7. The Chapel.\n\nCHAPTER 8. The Pulpit.\n\nCHAPTER 9. The Sermon.\n\nCHAPTER 10. A Bosom Friend.\n\nCHAPTER 11. Nightgown.\n\nCHAPTER 12. Biographical.\n\nCHAPTER 13. Wheelbarrow.\n\nCHAPTER 14. Nantucket.\n\nCHAPTER 15. Chowder.\n\nCHAPTER 16. The Ship.\n\nCHAPTER 17. The Ramadan.\n\nCHAPTER 18. His Mark.\n\nCHAPTER 19. The Prophet.\n\nCHAPTER 20. All Astir.\n\nCHAPTER 21. Going Aboard.\n\nCHAPTER 22. Merry Christmas.\n\nCHAPTER 23. The Lee Shore.\n\nCHAPTER 24. The Advocate.\n\nCHAPTER 25. Postscript.\n\nCHAPTER 26. Knights and Squires.\n\nCHAPTER 27. Knights and Squires.\n\nCHAPTER 28. Ahab.\n\nCHAPTER 29. Enter Ahab; to Him, Stubb.\n\nCHAPTER 30. The Pipe.\n\nCHAPTER 31. Queen Mab.\n\nCHAPTER 32. Cetology.\n\nCHAPTER 33. The Specksnyder.\n\nCHAPTER 34. Th'
+
 ```
 Query the cache
 ---------------
@@ -69,7 +97,7 @@ for debugging/better control you have these boolean options on create
 GutenbergCache.create(refresh=True, download=True, unpack=True, parse=True, cache=True, deleteTemp=True)
 ```
 
-for even better control you may set the GutenbergCacheSettings  
+for even better control you may set the GutenbergCacheSettings
 -   *CacheFilename*
 -   *CacheUnpackDir*
 -   *CacheArchiveName*
@@ -79,11 +107,11 @@ for even better control you may set the GutenbergCacheSettings
 -   *MongoDBCacheServer*
 
 ```
-GutenbergCacheSettings.set( CacheFilename="", CacheUnpackDir="", 
+GutenbergCacheSettings.set( CacheFilename="", CacheUnpackDir="",
     CacheArchiveName="", ProgressBarMaxLength="", CacheRDFDownloadLink="", TextFilesCacheFolder="", MongoDBCacheServer="")
 ```
 
-After doing a create you need to wait, it will be over in about 5 minutes depending on your internet speed and computer power (On a i7 with gigabit connection and ssd it finishes in about 1 minute)
+After doing a `create` go grab a coffee, it will be over in about 5 minutes, depending on your internet speed and computer power (On a i7 with gigabit connection and ssd it finishes in about 1 minute)
 
 Get the cache
 ```
@@ -96,7 +124,7 @@ Now you can do queries
 
 Get the book Gutenberg unique indices by using this query function
 
-Standard query fields:  
+Standard query fields:
 -   languages
 -   authors
 -   types
@@ -106,7 +134,7 @@ Standard query fields:
 -   bookshelves
 -   downloadtype
 ```
-print cache.query(downloadtype=['application/plain','text/plain','text/html; charset=utf-8'])
+print(cache.query(downloadtype=['application/plain','text/plain','text/html; charset=utf-8']))
 ```
 Or do a native query on the sqlite database
 ```
@@ -114,12 +142,11 @@ Or do a native query on the sqlite database
 cache.native_query("SELECT * FROM books")
 #mongodb
 cache.native_query({type:'Text'}}
-```  
-For SQLITE custom queries take a look at the SQLITE database scheme:
+```
+For SQLITE custom queries, take a look at the SQLITE database scheme:
 
 ![image](https://github.com/raduangelescu/gutenbergpy/blob/master/sqlitecheme.png?raw=true)
 
-For MongoDB queries you have all the books collection. Each book with the following fields:
+For MongoDB queries, you have all the books collection. Each book with the following fields:
 
 > -   book(publisher, rights, language, book\_shelf, gutenberg\_book\_id, date\_issued, num\_downloads, titles, subjects, authors, files ,type)
-
