@@ -109,11 +109,7 @@ LEGALESE_END_MARKERS = frozenset(("SERVICE THAT CHARGES FOR DOWNLOAD",))
 ##
 # adapted from https://github.com/c-w/Gutenberg/blob/master/gutenberg/acquire/text.py
 def get_text_dir_from_index(index):
-    str_etextno = str(index).zfill(2)
-    all_but_last_digit = list(str_etextno[:-1])
-    subdir_part = "/".join(all_but_last_digit)
-    subdir = "{0}/{1}".format(subdir_part, index)  # etextno not zfilled
-    return subdir
+    return f"files/{index}"
 
 
 ##
@@ -124,7 +120,7 @@ def _format_download_uri(index):
     Raises:
         UnknownDownloadUri: If no download location can be found for the text.
     """
-    uri_root = r'http://www.gutenberg.lib.md.us'
+    uri_root = r'https://www.gutenberg.org'
     extensions = ('.txt', '-8.txt', '-0.txt')
     for extension in extensions:
         path = get_text_dir_from_index(index)
@@ -134,10 +130,10 @@ def _format_download_uri(index):
             etextno=index,
             extension=extension)
         p = urlparse(uri)
-        conn = http.client.HTTPConnection(p.netloc)
+        conn = http.client.HTTPSConnection(p.netloc)
         conn.request('HEAD', p.path)
         resp = conn.getresponse()
-        if resp.status < 400 :
+        if resp.status < 400:
             return uri
     raise None
 
