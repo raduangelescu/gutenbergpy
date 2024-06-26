@@ -14,6 +14,9 @@ from urllib.parse import urlparse
 import chardet
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 
+class UnknownDownloadUri(Exception):
+    """location cannot be found for a text"""
+
 ##
 # MARKERS ARE FROM https://github.com/c-w/Gutenberg/blob/master/gutenberg/_domain_model/text.py
 
@@ -122,8 +125,8 @@ def _format_download_uri(index):
     """
     uri_root = r'https://www.gutenberg.org'
     extensions = ('.txt', '-8.txt', '-0.txt')
+    path = get_text_dir_from_index(index)
     for extension in extensions:
-        path = get_text_dir_from_index(index)
         uri = '{root}/{path}/{etextno}{extension}'.format(
             root=uri_root,
             path=path,
@@ -135,7 +138,7 @@ def _format_download_uri(index):
         resp = conn.getresponse()
         if resp.status < 400:
             return uri
-    raise None
+    raise UnknownDownloadUri("location not found for text at path: %s" % path)
 
 
 ##
