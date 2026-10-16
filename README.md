@@ -300,4 +300,11 @@ pytest -m network   # tests that download from gutenberg.org
 
 Every push and pull request runs the tests on Linux, Windows and macOS with Python 3.9 to 3.14 (see `.github/workflows/ci.yml`). The network tests run weekly, so changes on the Project Gutenberg side get caught.
 
-To release a new version: bump `version` in `setup.cfg`, then create a GitHub release with the tag `v<version>` (e.g. `v0.4.0`). The release workflow runs the tests, builds the package and publishes it to PyPI.
+To release a new version, bump `version` in `setup.cfg`, commit, then push a matching tag:
+
+```
+git tag v0.4.0
+git push origin master v0.4.0
+```
+
+The CI runs all the tests and builds the package. If everything passes, its `deploy` job publishes the package to PyPI.
