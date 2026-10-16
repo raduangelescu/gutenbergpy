@@ -20,10 +20,11 @@ class Utils:
                 os.remove(GutenbergCacheSettings.CACHE_FILENAME)
             except OSError:
                 pass
-        try:
-            os.remove(GutenbergCacheSettings.CACHE_RDF_ARCHIVE_NAME)
-        except OSError:
-            pass
+        for archive in (GutenbergCacheSettings.CACHE_RDF_ARCHIVE_NAME, GutenbergCacheSettings.CACHE_CSV_ARCHIVE_NAME):
+            try:
+                os.remove(archive)
+            except OSError:
+                pass
         try:
             for root, dirs, files in os.walk(GutenbergCacheSettings.CACHE_RDF_UNPACK_DIRECTORY, topdown=False):
                 for name in files:
@@ -55,17 +56,22 @@ class Utils:
     @staticmethod
     def __report(block_no,block_size, file_size):  # callback called on download update
         Utils.download_progress += block_size
-        type = 'Downloading %s' % GutenbergCacheSettings.CACHE_RDF_ARCHIVE_NAME
-        Utils.update_progress_bar(type, Utils.download_progress, file_size, True)
+        type = 'Downloading %s' % Utils.download_name
+        if file_size > 0:
+            Utils.update_progress_bar(type, min(Utils.download_progress, file_size), file_size, True)
+
+    download_name = ''
 
     ##
-    # Download the RDF file function
+    # Download the RDF file function (or any other file, e.g. the csv catalog)
 
     @staticmethod
-    def download_file():  # used to download the rdf tar file
+    def download_file(link=None, file_name=None):  # used to download the rdf tar file
+        link      = link or GutenbergCacheSettings.CACHE_RDF_DOWNLOAD_LINK
+        file_name = file_name or GutenbergCacheSettings.CACHE_RDF_ARCHIVE_NAME
         start = time.time()
-        urllib.request.urlretrieve(GutenbergCacheSettings.CACHE_RDF_DOWNLOAD_LINK,
-                                   GutenbergCacheSettings.CACHE_RDF_ARCHIVE_NAME, Utils.__report)
+        Utils.download_name = file_name
+        urllib.request.urlretrieve(link, file_name, Utils.__report)
 
         print ('took %f' % (time.time() - start))
         Utils.download_progress = 0

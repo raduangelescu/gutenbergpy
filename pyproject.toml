@@ -4,3 +4,9 @@ requires = [
     "wheel"
 ]
 build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# tests marked network talk to gutenberg.org, run them with: pytest -m network
+addopts = "-m 'not network'"
+markers = ["network: tests that download from gutenberg.org"]

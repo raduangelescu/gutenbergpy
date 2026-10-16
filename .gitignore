@@ -14,3 +14,5 @@ cache/
 rdf-files.tar.bz2
 memory.pickle
 memusage.txt
+pg_catalog.csv.gz
+.pytest_cache/

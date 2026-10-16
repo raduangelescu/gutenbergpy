@@ -5,6 +5,7 @@ from gutenbergpy.utils import Utils
 
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 from gutenbergpy.parse.rdfparser import RdfParser
+from gutenbergpy.parse.csvparser import CsvParser
 from gutenbergpy.caches.sqlitecache import SQLiteCache
 from gutenbergpy.caches.mongodbcache import MongodbCache
 
@@ -14,6 +15,16 @@ from gutenbergpy.caches.mongodbcache import MongodbCache
 class GutenbergCacheTypes:
     CACHE_TYPE_SQLITE  = 0
     CACHE_TYPE_MONGODB = 1
+
+
+##
+# Metadata sources the cache can be built from
+# noinspection PyClassHasNoInit
+class GutenbergCacheSources:
+    # full metadata (download links, download counts, aliases...), slow: 100+MB archive, minutes to parse
+    RDF = 'rdf'
+    # fast: a few MB csv parsed in seconds, but without download links, download counts, aliases, publisher, rights
+    CSV = 'csv'
 
 
 ##
@@ -41,6 +52,11 @@ class GutenbergCache:
         parse       = True  if 'parse'    not in kwargs else kwargs['parse']
         cache       = True  if 'cache'    not in kwargs else kwargs['cache']
         deleteTmp   = True  if 'deleteTemp' not in kwargs else kwargs['deleteTemp']
+        source      = GutenbergCacheSources.RDF if 'source' not in kwargs else kwargs['source']
+
+        if source not in (GutenbergCacheSources.RDF, GutenbergCacheSources.CSV):
+            raise ValueError("unknown cache source %r, use 'rdf' or 'csv'" % (source,))
+        use_csv = source == GutenbergCacheSources.CSV
 
         if path.isfile(GutenbergCacheSettings.CACHE_FILENAME) and not refresh and cache_type == GutenbergCacheTypes.CACHE_TYPE_SQLITE:
             print('Cache already exists')
@@ -51,16 +67,21 @@ class GutenbergCache:
             Utils.delete_tmp_files(True)
 
         if download:
-            Utils.download_file()
+            if use_csv:
+                Utils.download_file(GutenbergCacheSettings.CACHE_CSV_DOWNLOAD_LINK,
+                                    GutenbergCacheSettings.CACHE_CSV_ARCHIVE_NAME)
+            else:
+                Utils.download_file()
 
-        if unpack:
+        # the csv catalog is read straight from the .gz file, there is nothing to unpack
+        if unpack and not use_csv:
             Utils.unpack_tarbz2()
 
         if parse:
             t0 = time.time()
-            parser = RdfParser()
+            parser = CsvParser() if use_csv else RdfParser()
             result = parser.do()
-            print('RDF PARSING took ' + str(time.time() - t0))
+            print('%s PARSING took %s' % (source.upper(), str(time.time() - t0)))
 
             if cache:
                 t0 = time.time()

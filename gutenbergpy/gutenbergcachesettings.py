@@ -10,6 +10,10 @@ class GutenbergCacheSettings:
     CACHE_RDF_UNPACK_DIRECTORY = os.path.join('cache','epub')
     # name of the downloaded rdf arhive
     CACHE_RDF_ARCHIVE_NAME = 'rdf-files.tar.bz2'
+    # name of the gutenberg link for the csv catalog (used by the fast csv source)
+    CACHE_CSV_DOWNLOAD_LINK = 'https://www.gutenberg.org/cache/epub/feeds/pg_catalog.csv.gz'
+    # name of the downloaded csv catalog
+    CACHE_CSV_ARCHIVE_NAME = 'pg_catalog.csv.gz'
     # number of #'s shown in loading bar (common to all loading bars)
     DOWNLOAD_NUM_DIVS = 20
     # text files cache folder
@@ -42,6 +46,10 @@ class GutenbergCacheSettings:
             GutenbergCacheSettings.DOWNLOAD_NUM_DIVS = kwargs['ProgressBarMaxLength']
         if 'CacheRDFDownloadLink' in kwargs:
             GutenbergCacheSettings.CACHE_RDF_DOWNLOAD_LINK = kwargs['CacheRDFDownloadLink']
+        if 'CacheCSVDownloadLink' in kwargs:
+            GutenbergCacheSettings.CACHE_CSV_DOWNLOAD_LINK = kwargs['CacheCSVDownloadLink']
+        if 'CacheCSVArchiveName' in kwargs:
+            GutenbergCacheSettings.CACHE_CSV_ARCHIVE_NAME = kwargs['CacheCSVArchiveName']
         if 'TextFilesCacheFolder' in kwargs:
             GutenbergCacheSettings.TEXT_FILES_CACHE_FOLDER = kwargs['TextFilesCacheFolder']
         if 'MongoDBCacheServer' in kwargs:

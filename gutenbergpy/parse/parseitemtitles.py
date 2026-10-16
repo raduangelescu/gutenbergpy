@@ -20,6 +20,12 @@ class ParseItemTitles(ParseItem):
                     new_index = self.set.add((text, book_id))
                     ret.append(new_index)
 
+    # same as do() but for values that are already extracted (used by the csv parser)
+    def do_values(self, values, book_id):
+        tmp = []
+        self.att_to_set_book_id(values, tmp, book_id)
+        return tmp
+
     def do(self, doc, book_id):
         tmp = []
         for xpth in self.xPath:

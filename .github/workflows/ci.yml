@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  schedule:
+    # weekly, catches changes on the Project Gutenberg side (urls, csv columns...)
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: test (${{ matrix.os }}, python ${{ matrix.python-version }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ['3.9', '3.10', '3.11', '3.12', '3.13', '3.14']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install
+        run: python -m pip install .[test]
+      - name: Test
+        run: python -m pytest -v
+
+  network:
+    # talks to gutenberg.org, so it only runs on the schedule or when started by hand
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install
+        run: python -m pip install .[test]
+      - name: Network tests
+        run: python -m pytest -v -m network
+      - name: Build the cache from the real csv catalog
+        working-directory: ${{ runner.temp }}
+        run: |
+          python -c "
+          from gutenbergpy.gutenbergcache import GutenbergCache
+          GutenbergCache.create(source='csv')
+          cache = GutenbergCache.get_cache()
+          assert 2701 in cache.query(titles=['Moby Dick; Or, The Whale'])
+          assert 2701 in cache.query(authors=['Melville, Herman'])
+          print('ok')
+          "
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Build sdist and wheel
+        run: |
+          python -m pip install build twine
+          python -m build
+          python -m twine check --strict dist/*
+      - name: Check the wheel installs and imports
+        run: |
+          python -m pip install dist/*.whl
+          cd "$RUNNER_TEMP" && python -c "import gutenbergpy.gutenbergcache, gutenbergpy.textget; print('ok')"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/

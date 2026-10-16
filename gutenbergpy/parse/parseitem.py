@@ -20,6 +20,12 @@ class ParseItem:
     def add_to_set(self, xpathResults, ret):
         self.add_to_set_internal(xpathResults, ret)
 
+    # same as do() but for values that are already extracted (used by the csv parser)
+    def do_values(self, values):
+        tmp = []
+        self.add_to_set_internal(values, tmp)
+        return tmp
+
     def do(self, doc):
         tmp = []
         for xpth in self.xPath:
