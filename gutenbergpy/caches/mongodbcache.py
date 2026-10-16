@@ -27,10 +27,10 @@ class MongodbCache(Cache):
         book_dict['date_issued']    = parseItem.date_issued
         book_dict['num_downloads']  = parseItem.num_downloads
 
-        book_dict['titles']         = map(lambda x: x[0] , fields[Fields.TITLE].set[[x - 1 for x in parseItem.titles_id]])  if parseItem.titles_id and parseItem.titles_id != -1 else ['None']
-        book_dict['subjects']       = map(lambda x: x , fields[Fields.SUBJECT].set[[x - 1 for x in parseItem.subjects_id]]) if parseItem.subjects_id and parseItem.subjects_id != -1 else ['None']
-        book_dict['authors']        = map(lambda x: x , fields[Fields.AUTHOR].set[[x - 1 for x in parseItem.authors_id]]) if parseItem.authors_id and parseItem.authors_id != -1 else ['None']
-        book_dict['files']          = map(lambda x: x[0] , fields[Fields.FILES].setLinks[[x - 1 for x in parseItem.files_id]]) if parseItem.files_id and parseItem.files_id != -1 else ['None']
+        book_dict['titles']         = [x[0] for x in fields[Fields.TITLE].set[[x - 1 for x in parseItem.titles_id]]]  if parseItem.titles_id and parseItem.titles_id != -1 else ['None']
+        book_dict['subjects']       = list(fields[Fields.SUBJECT].set[[x - 1 for x in parseItem.subjects_id]]) if parseItem.subjects_id and parseItem.subjects_id != -1 else ['None']
+        book_dict['authors']        = list(fields[Fields.AUTHOR].set[[x - 1 for x in parseItem.authors_id]]) if parseItem.authors_id and parseItem.authors_id != -1 else ['None']
+        book_dict['files']          = [x[0] for x in fields[Fields.FILES].setLinks[[x - 1 for x in parseItem.files_id]]] if parseItem.files_id and parseItem.files_id != -1 else ['None']
         book_dict['type']           = fields[Fields.TYPE].set[parseItem.type_id-1]  if parseItem.type_id and parseItem.type_id != -1 else 'None'
         return book_dict
     ##
@@ -47,24 +47,22 @@ class MongodbCache(Cache):
 
     def create_or_dict(self,name,newname, dt,out):
         if name in dt:
-            dict = {}
-            lst = []
             for e in dt[name]:
-                lst.append ({name:e})
-            out.extend(lst)
+                out.append({newname: e})
 
     def query(self,**kwargs):
         query = {}
         lst = []
-        self.create_or_dict('languages','languages',kwargs,lst)
+        self.create_or_dict('languages','language',kwargs,lst)
         self.create_or_dict('authors','authors', kwargs, lst)
         self.create_or_dict('types','type', kwargs, lst)
         self.create_or_dict('titles', 'titles', kwargs, lst)
         self.create_or_dict('subjects', 'subjects', kwargs, lst)
         self.create_or_dict('publishers', 'publisher', kwargs, lst)
-        self.create_or_dict('bookshelves', 'bookshelves', kwargs, lst)
+        self.create_or_dict('bookshelves', 'book_shelf', kwargs, lst)
         self.create_or_dict('gutenberg_book_id', 'gutenberg_book_id', kwargs, lst)
-        query['$or'] = lst
+        if lst:
+            query['$or'] = lst
         lst =[]
         for res in  self.native_query(query):
             lst.append(res["gutenberg_book_id"])

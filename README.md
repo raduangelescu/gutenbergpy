@@ -136,6 +136,19 @@ Standard query fields:
 ```
 print(cache.query(downloadtype=['application/plain','text/plain','text/html; charset=utf-8']))
 ```
+
+The returned values are Gutenberg book ids, so they can be passed straight to `get_text_by_id`.
+For example, to get a book by its title:
+```
+import gutenbergpy.textget
+ids = cache.query(titles=['Moby Dick; Or, The Whale'])
+raw_book = gutenbergpy.textget.get_text_by_id(ids[0])
+```
+
+In native SQL queries the Gutenberg id is `books.gutenbergbookid`; `books.id` is only the internal row id used for joins.
+```
+cache.native_query("SELECT books.gutenbergbookid FROM books, titles WHERE titles.bookid = books.id AND titles.name LIKE '%Moby%'").fetchall()
+```
 Or do a native query on the sqlite database
 ```
 #python

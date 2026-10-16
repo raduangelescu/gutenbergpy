@@ -42,7 +42,7 @@ class GutenbergCache:
         cache       = True  if 'cache'    not in kwargs else kwargs['cache']
         deleteTmp   = True  if 'deleteTemp' not in kwargs else kwargs['deleteTemp']
 
-        if path.isfile(GutenbergCacheSettings.CACHE_FILENAME) and refresh and cache_type == GutenbergCacheTypes.CACHE_TYPE_SQLITE:
+        if path.isfile(GutenbergCacheSettings.CACHE_FILENAME) and not refresh and cache_type == GutenbergCacheTypes.CACHE_TYPE_SQLITE:
             print('Cache already exists')
             return
 

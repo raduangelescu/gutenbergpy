@@ -1,10 +1,7 @@
 import time
 import sys
 import os
-import urllib
 import tarfile
-from future.standard_library import install_aliases
-install_aliases()
 import urllib.request
 from gutenbergpy.gutenbergcachesettings import GutenbergCacheSettings
 
@@ -84,7 +81,11 @@ class Utils:
         type = 'Extracting  %s' % GutenbergCacheSettings.CACHE_RDF_ARCHIVE_NAME
         for idx, member in enumerate(tar.getmembers()):
             Utils.update_progress_bar(type, idx, total_num)
-            tar.extract(member)
+            if hasattr(tarfile, 'data_filter'):
+                # refuse members that would be written outside the current directory
+                tar.extract(member, filter='data')
+            else:
+                tar.extract(member)
         tar.close()
 
         print('took %f' % (time.time() - start))

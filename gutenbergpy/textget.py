@@ -7,8 +7,6 @@ import os
 import errno
 import http.client
 from contextlib import closing
-from future.standard_library import install_aliases
-install_aliases()
 from urllib.request import urlopen
 from urllib.parse import urlparse
 import chardet
@@ -126,12 +124,15 @@ def _format_download_uri(index):
     uri_root = r'https://www.gutenberg.org'
     extensions = ('.txt', '-8.txt', '-0.txt')
     path = get_text_dir_from_index(index)
+    # PG's generated clean utf-8 text comes first, the legacy files are fallbacks
+    uris = ['{root}/cache/epub/{etextno}/pg{etextno}.txt'.format(root=uri_root, etextno=index)]
     for extension in extensions:
-        uri = '{root}/{path}/{etextno}{extension}'.format(
+        uris.append('{root}/{path}/{etextno}{extension}'.format(
             root=uri_root,
             path=path,
             etextno=index,
-            extension=extension)
+            extension=extension))
+    for uri in uris:
         p = urlparse(uri)
         conn = http.client.HTTPSConnection(p.netloc)
         conn.request('HEAD', p.path)
@@ -154,8 +155,8 @@ def get_text_by_id(index):
         download_uri = _format_download_uri(index)
 
         text_bytes = urlopen(download_uri).read()
-        encoding = chardet.detect(text_bytes)["encoding"]
-        text = text_bytes.decode(encoding)
+        encoding = chardet.detect(text_bytes)["encoding"] or 'utf-8'
+        text = text_bytes.decode(encoding, errors='replace')
 
         with closing(gzip.open(file_cache_location, 'w')) as cache:
             cache.write(text.encode('utf-8'))

@@ -125,7 +125,7 @@ class SQLiteCache(Cache):
             HelperQuery(['titles'],('titles.bookid = books.id', 'titles.name',
                          kwargs['titles'] if 'titles' in kwargs else None)),
             HelperQuery(['subjects', 'book_subjects'],
-                        ('subjects.id = book_subjects.bookid and books.id = book_subjects.subjectid ', 'subjects.name',
+                        ('subjects.id = book_subjects.subjectid and books.id = book_subjects.bookid', 'subjects.name',
                          kwargs['subjects'] if 'subjects' in kwargs else None)),
             HelperQuery(['publishers'],
                         ('publishers.id = books.publisherid', 'publishers.name',
@@ -142,23 +142,26 @@ class SQLiteCache(Cache):
         query = "SELECT DISTINCT books.gutenbergbookid FROM books"
         for q in runtime:
             query = "%s,%s"% (query ,','.join(map(str,  q.tables)))
-        query = "%s WHERE " % query
 
-        for idx,q in enumerate(runtime):
-            query = "%s %s and %s in (%s) " % (query,q.query_struct[0],q.query_struct[1],','.join(map(lambda x: "'%s'"%(str(x)), q.query_struct[2])))
-            if idx != len(runtime) -1:
-                query = "%s and " % query
+        conditions = []
+        params     = []
+        for q in runtime:
+            values = [str(x) for x in q.query_struct[2]]
+            conditions.append("%s and %s in (%s)" % (q.query_struct[0], q.query_struct[1], ','.join('?' * len(values))))
+            params.extend(values)
+        if conditions:
+            query = "%s WHERE %s" % (query, ' and '.join(conditions))
 
         res = []
-        for row in self.native_query(query):
+        for row in self.native_query(query, params):
             res.append(int(row[0]))
 
         return res
     ##
     # Native query function implementation
-    def native_query(self,sql_query):
+    def native_query(self,sql_query,params=()):
         if self.cursor is None or self.connection is None:
             self.connection = sqlite3.connect(GutenbergCacheSettings.CACHE_FILENAME)
             self.cursor     = self.connection.cursor()
 
-        return self.cursor.execute(sql_query)
+        return self.cursor.execute(sql_query, params)
