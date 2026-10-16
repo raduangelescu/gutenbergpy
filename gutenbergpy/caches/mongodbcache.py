@@ -46,7 +46,7 @@ class MongodbCache(Cache):
             self.db.books.insert_one(json)
 
     def create_or_dict(self,name,newname, dt,out):
-        if dt.has_key(name):
+        if name in dt:
             dict = {}
             lst = []
             for e in dt[name]:
